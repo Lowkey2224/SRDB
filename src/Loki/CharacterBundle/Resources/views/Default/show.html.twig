@@ -1,0 +1,17 @@
+User: {{ username }}<br/>
+{% if char.type == 2 %}N{% endif %}SC<br/>
+Character: {{ char.name }}<br/>
+Rasse: {{ char.race }}<br/>
+Beruf: {{ char.occupation }}<br/>
+Beschreibung: {{ char.description }}<br/>
+<br/>Attribute:<br/>
+{% for attribut in attributes %}
+    {{ attribut.name }}: {{ attribut.level }}<br/>
+{% endfor %}
+<br/>Skills:<br/>
+{% for skill in skills %}
+    {{ skill.name }}: {{ skill.level }}<br/>
+{% endfor %}
+{% for s in char.skills %}
+    {{ s }}<br/>
+{% endfor %}

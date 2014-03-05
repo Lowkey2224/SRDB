@@ -1,0 +1,124 @@
+<?php
+
+namespace Loki\CharacterBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CharSkill
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ */
+class CharSkill
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idCharacter", type="int")
+     */
+    private $idCharacter;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idSkill", type="int")
+     */
+    private $idSkill;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="level", type="int")
+     */
+    private $level;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idCharacter
+     *
+     * @param \int $idCharacter
+     * @return CharSkill
+     */
+    public function setIdCharacter(\int $idCharacter)
+    {
+        $this->idCharacter = $idCharacter;
+    
+        return $this;
+    }
+
+    /**
+     * Get idCharacter
+     *
+     * @return \int 
+     */
+    public function getIdCharacter()
+    {
+        return $this->idCharacter;
+    }
+
+    /**
+     * Set idSkill
+     *
+     * @param \int $idSkill
+     * @return CharSkill
+     */
+    public function setIdSkill(\int $idSkill)
+    {
+        $this->idSkill = $idSkill;
+    
+        return $this;
+    }
+
+    /**
+     * Get idSkill
+     *
+     * @return \int 
+     */
+    public function getIdSkill()
+    {
+        return $this->idSkill;
+    }
+
+    /**
+     * Set level
+     *
+     * @param \int $level
+     * @return CharSkill
+     */
+    public function setLevel(\int $level)
+    {
+        $this->level = $level;
+    
+        return $this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return \int 
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+}

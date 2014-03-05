@@ -1,0 +1,26 @@
+{%  extends "LokiCharacterBundle::front.html.twig" %}
+{% block content %}
+    <div>
+        Skill von {{ character.name }} bearbeiten.
+    </div>
+    {% block attributeForm %}
+        <div class="form-horizontal">
+            {{ form_start(form) }}
+            {% for flashMessage in app.session.getFlashBag.get('form-error') %}
+                <div class="alert alert-error">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+
+            {{ charSkill.skill.name }}
+            {{ form_errors(form.level) }}
+            {{ form_widget(form.level) }}
+            {{ form_row (form.skill) }}
+            {{ form_row(form.submit) }}
+
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+
+    {% endblock %}
+{% endblock %}

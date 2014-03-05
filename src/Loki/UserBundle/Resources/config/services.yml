@@ -1,0 +1,7 @@
+parameters:
+#    loki_user.example.class: Loki\UserBundle\Example
+
+services:
+#    loki_user.example:
+#        class: %loki_user.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

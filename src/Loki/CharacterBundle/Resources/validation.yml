@@ -1,0 +1,6 @@
+Loki\CharacterBundle\Entity\CharacterToSkill:
+                  constraints:
+                      - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+                          fields: [character, skill]
+                          errorPath: character
+                          message: 'Character hat diese Fähigkeit bereits.'

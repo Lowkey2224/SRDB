@@ -1,0 +1,147 @@
+Loki\UserBundle\Entity\User:
+    superadmin-loki:
+        username (unique): Loki
+        email (unique): jenz@silpion.de
+        plainpassword: wuseldusel
+        enabled: true
+        isDeleted: false
+        roles: [ROLE_SUPERADMIN]
+
+    user-loki2:
+        username (unique): Loki2
+        email (unique): loki@silpion.de
+        plainpassword: wuseldusel
+        enabled: true
+        isDeleted: false
+        roles: [ROLE_USER]
+
+
+Loki\CharacterBundle\Entity\Character:
+    Lodur:
+        name: Lodur
+        race: HSS
+        occupation: Decker/Rigger
+        description: <text(100)>
+        type: 1
+        user: @superadmin-loki
+
+    Nigel:
+        name: Nigel
+        race: HSN
+        occupation: Schamane
+        description: <text(30)>
+        type: 1
+        user: @user-loki2
+
+Loki\CharacterBundle\Entity\Attribute:
+    con:
+        name: Konstitution
+
+    qck:
+        name: Schnelligkeit
+
+    str:
+        name: Stärke
+
+    cha:
+        name: Charisma
+
+    int:
+        name: Intelligenz
+
+    will:
+        name: Willenskraft
+
+    ess:
+        name: Essenz
+
+    mag:
+        name: Magie
+
+Loki\CharacterBundle\Entity\Skill:
+    ett:
+        name: Gebräuche
+        type: 1
+        attribute: @cha
+
+    ath:
+        name: Athletik
+        type: 1
+        attribute: @con
+
+    sth:
+        name: Heimlichkeit
+        type: 1
+        attribute: @qck
+
+Loki\CharacterBundle\Entity\CharacterToAttribute:
+    con{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @con
+        level: <numberBetween(1,6)>
+
+    qck{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @qck
+        level: <numberBetween(1,6)>
+
+    str{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @str
+        level: <numberBetween(1,6)>
+
+    cha{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @cha
+        level: <numberBetween(1,6)>
+
+    int{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @int
+        level: <numberBetween(1,6)>
+
+    will{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @will
+        level: <numberBetween(1,6)>
+
+    ess{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @ess
+        level: <numberBetween(1,6)>
+
+    mag{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @mag
+        level: 0
+        
+
+
+Loki\CharacterBundle\Entity\CharacterToSkill:
+
+    ath{Lodur, Nigel}:
+        character: @<current()>
+        skill: @ath
+        level: <numberBetween(1,6)>
+
+    sth{Lodur, Nigel}:
+        character: @<current()>
+        skill: @sth
+        level: <numberBetween(1,6)>
+
+    ett{Lodur, Nigel}:
+        character: @<current()>
+        skill: @ett
+        level: <numberBetween(1,6)>
+
+Loki\CharacterBundle\Entity\ConnectionNotInDB:
+
+    connLodur{1..5}:
+        name: <en_US:name()>
+        level: <numberBetween(1,2)>
+        character: @Lodur
+
+    connNigel{1..5}:
+        name: <en_US:name()>
+        level: <numberBetween(1,2)>
+        character: @Nigel

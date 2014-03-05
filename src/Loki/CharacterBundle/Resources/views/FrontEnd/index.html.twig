@@ -1,0 +1,18 @@
+{%  extends "LokiCharacterBundle::front.html.twig" %}
+{% block content %}
+    {% set count = 0 %}
+    {% for charEntry in characters %}
+        {% if count == 0 %}
+            <div class="row">
+        {% endif %}
+                <div class="col-md-4">
+                <h2><a href="{{ path('loki_character_show_character', {'characterId' : charEntry.id}) }}">{{  charEntry.name}}</a></h2>
+                Profession: {{ charEntry.occupation }}
+                </div>
+        {% set count = count + 1 %}
+        {% if count == 3 %}
+            {% set count = 0 %}
+        </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

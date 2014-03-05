@@ -1,0 +1,113 @@
+# src/Acme/HelloBundle/Resources/config/routing.yml
+#hello:
+    #path:     /
+    #defaults: { _controller: LokiCharacterBundle:Default }
+
+#_default_show:
+#    resource: "@LokiCharacterBundle/Controller/DefaultController.php"
+#    type:     annotation
+#    prefix:   /show
+
+
+
+loki_character_show_character_for_user:
+    pattern: /show/user/{userId}
+    defaults: {_controller: LokiCharacterBundle:FrontEnd:showForUser, userId:0}
+    requirements:
+        characterId: \d+
+
+loki_character_show_character:
+    pattern: /show/{characterId}
+    defaults: {_controller: LokiCharacterBundle:FrontEnd:show, characterId:0}
+    requirements:
+        characterId: \d+
+
+loki_character_edit_character:
+    pattern: /edit/{characterId}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:editCharacter, characterId:0}
+    requirements:
+            characterId: \d+
+
+loki_character_add_character:
+    pattern: /add
+    defaults: {_controller: LokiCharacterBundle:BackEnd:editCharacter, characterId:0}
+
+loki_character_edit_character_attributes:
+    pattern: /edit/{characterId}/attribute/{attributeNumber}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:editCharacterAttribute, characterId:0}
+    requirements:
+        characterId: \d+
+        attributeNumber: \d+
+
+loki_character_edit_character_skill:
+    pattern: /edit/{characterId}/skill/{skillId}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:editCharacterSkill, characterId:0}
+    requirements:
+        characterId: \d+
+        attributeNumber: \d+
+
+loki_character_delete_character_skill:
+    pattern: /delete/{characterId}/skill/{skillId}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:deleteCharacterSkill, characterId:0}
+    requirements:
+        characterId: \d+
+        attributeNumber: \d+
+
+loki_character_add_skill:
+    pattern: /add/skill
+    defaults: {_controller: LokiCharacterBundle:BackEnd:addSkill}
+
+loki_character_add_skill_to_character:
+    pattern: /add/{characterId}/skill
+    defaults: {_controller: LokiCharacterBundle:BackEnd:addSkillToCharacter, characterId:0}
+    requirements:
+        characterId: \d+
+
+loki_character_add_character_connection:
+    pattern: /add/{characterId}/connection
+    defaults: {_controller: LokiCharacterBundle:BackEnd:editConnectionForCharacter, characterId:0}
+    requirements:
+        characterId: \d+
+
+loki_character_delete_character_connection:
+    pattern: /delete/{characterId}/connection/{connectionId}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:deleteConnectionForCharacter, characterId:0, connectionId: 0}
+    requirements:
+        characterId: \d+
+        connectionId: \d+
+
+loki_character_edit_character_connection:
+    pattern: /edit/{characterId}/connection/{connectionId}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:editConnectionForCharacter, characterId:0, connectionId: 0}
+    requirements:
+        characterId: \d+
+        connectionId: \d+
+
+loki_character_add_character_item:
+    pattern: /add/{characterId}/item
+    defaults: {_controller: LokiCharacterBundle:BackEnd:addItemToCharacter, characterId: 0}
+    requirements:
+        characterId: \d+
+
+loki_character_edit_character_item:
+    pattern: /edit/{characterId}/item/{itemId}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:addItemToCharacter, characterId: 0, itemId: 0}
+    requirements:
+        characterId: \d+
+        itemId: \d+
+
+loki_character_delete_character_item:
+    pattern: /delete/{characterId}/item/{itemId}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:addItemToCharacter, characterId: 0, itemId: 0}
+    requirements:
+        characterId: \d+
+        itemId: \d+
+
+
+loki_character_login_failure:
+    pattern: /loginFailure
+    defaults: {_controller: LokiCharacterBundle:FrontEnd:loginFailure}
+
+loki_character_index:
+    pattern: /
+    defaults: {_controller: LokiCharacterBundle:FrontEnd:index}

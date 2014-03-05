@@ -1,0 +1,272 @@
+{% extends 'LokiCharacterBundle::front.html.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{{ char.name }}</th>
+                    <th>{% if editable == true %}
+                        <a href="{{ path("loki_character_edit_character",{"characterId": char.id}) }}"><i
+                                        class="glyphicon glyphicon-pencil"></i></a>{% endif %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>User: {{ username }}</td>
+                </tr>
+                <tr>
+                    <td>{% if char.type == 2 %}N{% endif %}SC</td>
+                </tr>
+                <tr>
+                    <td>Rasse: {{ char.race }}</td>
+                </tr>
+                <tr>
+                    <td>Reputation: {{ char.reputation }}</td>
+                </tr>
+                <tr>
+                    <td>Karmapool: {{ char.karmapool }}</td>
+                </tr>
+                <tr>
+                    <td>Gutes Karma: {{ char.goodKarma }}</td>
+                </tr>
+                <tr>
+                    <td>Proffession{{ char.occupation }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="tooltipSpan"
+                              data-content="{{ char.description }}">
+                            Beschreibung:
+                            {{ char.description[:50] }}
+                            {% if char.description|length > 51 %}
+                                ...
+                            {% endif %}
+                            </span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            {#<h2>Attribute:</h2>#}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set attrCount = 1 %}
+                {% for attributEntry in attributes %}
+                    <tr>
+                        <td>{{ attributEntry.attribute.name }}: {{ attributEntry.level }}</td>
+                        <td>{% if editable == true %}
+                                <a href="{{ path("loki_character_edit_character_attributes",{"characterId": char.id, "attributeNumber":attrCount}) }}"><i
+                                            class="glyphicon glyphicon-pencil"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% set attrCount = attrCount +1 %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Skills</th>
+                    <th>{% if editable == true %}
+                            <a href="{{ path("loki_character_add_skill_to_character", {'characterId' :char.id}) }}"><i
+                                        class="glyphicon glyphicon-plus"></i> </a>
+                        {% endif %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for skillEntry in skills %}
+                    <tr>
+                        <td>{{ skillEntry.skill.name }}: {{ skillEntry.level }} </td>
+                        <td>{% if editable == true %}
+                                <a href="{{ path("loki_character_edit_character_skill", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
+                                            class="glyphicon glyphicon-pencil"></i></a>
+                                <a href="{{ path("loki_character_delete_character_skill", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Equipment</th>
+                    <th>
+                        {% if editable == true %}
+                            <a href="{{ path("loki_character_add_character_item", {"characterId" : char.id}) }}"><i
+                                        class="glyphicon glyphicon-plus"></i> </a>
+                        {% endif %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in equip %}
+                    <tr>
+                        <td>{{ item.name }}: {{ item.quantity }} </td>
+                        <td>{% if editable == true %}
+                                <a href="{{ path("loki_character_edit_character_item", {"characterId" : char.id, "itemId" : item.id}) }}"><i
+                                            class="glyphicon glyphicon-pencil"></i></a>
+                                <a href="{{ path("loki_character_delete_character_item", {"characterId" : char.id, "itemId" : item.id}) }}"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Connections</th>
+                    <th>{% if editable == true %}
+                            <a href="{{ path("loki_character_add_character_connection", {'characterId' : char.id}) }}"><i
+                                        class="glyphicon glyphicon-plus"></i> </a>
+                        {% endif %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for connEntry in connections %}
+                    <tr>
+                        <td>{{ connEntry.name }}: {{ connEntry.level }} </td>
+                        <td>{% if editable == true %}<a
+                                href="{{ path("loki_character_edit_character_connection", {"characterId" : char.id, "connectionId" : connEntry.id}) }}">
+                                    <i class="glyphicon glyphicon-pencil"></i></a>
+                                <a href="{{ path("loki_character_delete_character_connection", {"characterId" : char.id, "connectionId" : connEntry.id}) }}"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% for connEntry in connectionsNotInDB %}
+                    <tr>
+                        <td>{{ connEntry.name }}: {{ connEntry.level }} </td>
+                        <td>{% if editable == true %}<a
+                                href="{{ path("loki_character_edit_character_connection", {'characterId' : char.id, 'connectionId' : connEntry.id}) }}">
+                                    <i class="glyphicon glyphicon-pencil"></i></a>
+                                <a href="{{ path("loki_character_delete_character_connection", {'characterId' : char.id, 'connectionId' : connEntry.id}) }}"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Spells</th>
+                    <th>{% if editable == true %}
+                            <a href=""><i class="glyphicon glyphicon-plus"></i> </a>
+                        {% endif %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for spellEntry in spells %}
+                    <tr>
+                        <td>{{ spellEntry.name }}: {{ spellEntry.level }} </td>
+                        <td>{% if editable == true %}
+                                <a href=""><i class="glyphicon glyphicon-pencil"></i></a>
+                                <a href=""><i class="glyphicon glyphicon-remove"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Ki-Kräfte</th>
+                    <th>{% if editable == true %}
+                            <a href=""><i class="glyphicon glyphicon-plus"></i> </a>
+                        {% endif %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for power in kipowers %}
+                    <tr>
+                        <td>{{ power.name }}: {{ power.level }} </td>
+                        <td>{% if editable == true %}
+                                <a href=""><i class="glyphicon glyphicon-pencil"></i></a>
+                                <a href=""><i class="glyphicon glyphicon-remove"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Cyberware</th>
+                    <th>{% if editable == true %}
+                            <a href=""><i class="glyphicon glyphicon-plus"></i> </a>
+                        {% endif %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cyberwareEntry in cyberware %}
+                    <tr>
+                        <td>{{ cyberwareEntry.name }} {{ cyberwareEntry.level }}: {{ cyberwareEntry.cost }} </td>
+                        <td>{% if editable == true %}
+                                <a href=""><i class="glyphicon glyphicon-pencil"></i></a>
+                                <a href=""><i class="glyphicon glyphicon-remove"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block custom_javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("span.tooltipSpan").popover({
+                'placement': 'right',
+                'trigger': 'click',
+                'animation': true
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% block Javascript %}
+    <script tyoe="text/javascript">
+
+        (function () {
+            var page_category = 'show';
+            var url = document.URL;
+            var route_position = url.indexOf(page_category);
+            var route_segments = url.substring(route_position, url.length);
+            var slash_count = route_segments.split("/").length - 1;
+            if (slash_count != 1) {
+                url = 'http://{{ app.request.host }}/app_dev.php/show/1';
+                window.location = url;
+            }
+        }());
+    </script>
+{% endblock %}
+Displaying Character  {{ fname }}!

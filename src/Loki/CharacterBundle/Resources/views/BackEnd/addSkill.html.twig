@@ -1,0 +1,23 @@
+{%  extends "LokiCharacterBundle::front.html.twig" %}
+{% block content %}
+    {% block skillForm %}
+
+        <div class="characterForm">
+            {{ form_start(form) }}
+            {% for flashMessage in app.session.getFlashBag.get('form-error') %}
+                <div class="alert alert-error">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.type) }}
+            {{ form_row(form.attribute) }}
+            {{ form_row(form.submit) }}
+
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+
+    {% endblock %}
+{% endblock %}

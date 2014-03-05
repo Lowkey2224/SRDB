@@ -1,0 +1,154 @@
+<?php
+
+namespace Loki\CharacterBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Skill
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ */
+class Skill
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idSkill", type="int")
+     */
+    private $idSkill;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idAttribute", type="int")
+     */
+    private $idAttribute;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=45)
+     */
+    private $name;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="type", type="int")
+     */
+    private $type;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idSkill
+     *
+     * @param \int $idSkill
+     * @return Skill
+     */
+    public function setIdSkill(\int $idSkill)
+    {
+        $this->idSkill = $idSkill;
+    
+        return $this;
+    }
+
+    /**
+     * Get idSkill
+     *
+     * @return \int 
+     */
+    public function getIdSkill()
+    {
+        return $this->idSkill;
+    }
+
+    /**
+     * Set idAttribute
+     *
+     * @param \int $idAttribute
+     * @return Skill
+     */
+    public function setIdAttribute(\int $idAttribute)
+    {
+        $this->idAttribute = $idAttribute;
+    
+        return $this;
+    }
+
+    /**
+     * Get idAttribute
+     *
+     * @return \int 
+     */
+    public function getIdAttribute()
+    {
+        return $this->idAttribute;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Skill
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set type
+     *
+     * @param \int $type
+     * @return Skill
+     */
+    public function setType(\int $type)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return \int 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+}

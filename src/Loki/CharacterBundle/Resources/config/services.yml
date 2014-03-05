@@ -1,0 +1,46 @@
+parameters:
+  loki_user.service:          Loki\CharacterBundle\Service\User\Service
+  loki_character.service:          Loki\CharacterBundle\Service\Character\Service
+  loki_attribute.service:          Loki\CharacterBundle\Service\Attribute\Service
+  loki_attribute.repo: Loki\CharacterBundle\Repository\AttributeRepository
+  loki_attribute.repo.name: LokiCharacterBunde/Attribute
+  loki_character.repo: Loki\CharacterBundle\Repository\CharacterRepository
+  loki_characterToAttribute.repo: Loki\CharacterBundle\Repository\CharacterToAttributeRepository
+  repo_factory.class: doctrine.orm.main_entity_manager
+
+
+
+services:
+  loki_character.user:
+      class:      "%loki_user.service%"
+      arguments:
+          - @security.context
+
+  loki_character.character.repo:
+      class: Doctrine\ORM\EntityRepository
+      factory_service: doctrine
+      factory_method: getRepository
+      arguments:
+                  - "LokiCharacterBundle:Attribute"
+
+  loki_character.attribute.repo:
+      class: Doctrine\ORM\EntityRepository
+      factory_service: doctrine
+      factory_method: getRepository
+      arguments:
+                  - "LokiCharacterBundle:Attribute"
+
+  loki_character.characterToAttribute.repo:
+      class: Doctrine\ORM\EntityRepository
+      factory_service: doctrine
+      factory_method: getRepository
+      arguments:
+                  - "LokiCharacterBundle:CharacterToAttribute"
+
+  loki_character.character:
+      class: "%loki_character.service%"
+      arguments: ["@loki_character.attribute", "@loki_character.character.repo", "@loki_character.characterToAttribute.repo"]
+
+  loki_character.attribute:
+      class: "%loki_attribute.service%"
+      arguments: ["@loki_character.attribute.repo"]

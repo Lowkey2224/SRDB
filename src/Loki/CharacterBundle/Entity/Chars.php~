@@ -1,0 +1,244 @@
+<?php
+
+namespace Loki\CharacterBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Chars
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ */
+class Chars
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idCharacter", type="int")
+     */
+    private $idCharacter;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idUser", type="int")
+     */
+    private $idUser;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=45)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="race", type="string", length=45)
+     */
+    private $race;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="occupation", type="string", length=45)
+     */
+    private $occupation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=45)
+     */
+    private $description;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="type", type="int")
+     */
+    private $type;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idCharacter
+     *
+     * @param \int $idCharacter
+     * @return Chars
+     */
+    public function setIdCharacter(\int $idCharacter)
+    {
+        $this->idCharacter = $idCharacter;
+    
+        return $this;
+    }
+
+    /**
+     * Get idCharacter
+     *
+     * @return \int 
+     */
+    public function getIdCharacter()
+    {
+        return $this->idCharacter;
+    }
+
+    /**
+     * Set idUser
+     *
+     * @param \int $idUser
+     * @return Chars
+     */
+    public function setIdUser(\int $idUser)
+    {
+        $this->idUser = $idUser;
+    
+        return $this;
+    }
+
+    /**
+     * Get idUser
+     *
+     * @return \int 
+     */
+    public function getIdUser()
+    {
+        return $this->idUser;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Chars
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set race
+     *
+     * @param string $race
+     * @return Chars
+     */
+    public function setRace($race)
+    {
+        $this->race = $race;
+    
+        return $this;
+    }
+
+    /**
+     * Get race
+     *
+     * @return string 
+     */
+    public function getRace()
+    {
+        return $this->race;
+    }
+
+    /**
+     * Set occupation
+     *
+     * @param string $occupation
+     * @return Chars
+     */
+    public function setOccupation($occupation)
+    {
+        $this->occupation = $occupation;
+    
+        return $this;
+    }
+
+    /**
+     * Get occupation
+     *
+     * @return string 
+     */
+    public function getOccupation()
+    {
+        return $this->occupation;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Chars
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set type
+     *
+     * @param \int $type
+     * @return Chars
+     */
+    public function setType(\int $type)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return \int 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+}
