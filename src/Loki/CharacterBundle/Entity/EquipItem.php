@@ -18,15 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\EquipItemRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class EquipItem {
-
-    /**
-     * @var integer
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+class EquipItem extends AbstractEntity
+{
 
     /**
      * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Character", inversedBy="items")
@@ -40,27 +33,11 @@ class EquipItem {
     protected $amount;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @param mixed $amount
      */
-    protected $updated;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    public function __construct()
+    public function setAmount($amount)
     {
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedValue()
-    {
-        $this->setUpdated(new \DateTime());
+        $this->amount = $amount;
     }
 
     /**
@@ -72,48 +49,6 @@ class EquipItem {
     }
 
     /**
-     * @return mixed
-     */
-    public function getCharacter()
-    {
-        return $this->character;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-
-
-    /**
-     * @param mixed $amount
-     */
-    public function setAmount($amount)
-    {
-        $this->amount = $amount;
-    }
-
-    /**
      * @param mixed $character
      */
     public function setCharacter($character)
@@ -122,27 +57,11 @@ class EquipItem {
     }
 
     /**
-     * @param mixed $created
+     * @return mixed
      */
-    public function setCreated($created)
+    public function getCharacter()
     {
-        $this->created = $created;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @param mixed $updated
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
+        return $this->character;
     }
 
 

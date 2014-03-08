@@ -20,15 +20,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\ConnectionNotInDBRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class ConnectionNotInDB {
+class ConnectionNotInDB extends AbstractEntity {
 
-    /**
-     * @var integer
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Character", inversedBy="connectionsNotInDB")
@@ -46,27 +40,11 @@ class ConnectionNotInDB {
     protected $name;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @param mixed $character
      */
-    protected $updated;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    public function __construct()
+    public function setCharacter($character)
     {
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedValue()
-    {
-        $this->setUpdated(new \DateTime());
+        $this->character = $character;
     }
 
     /**
@@ -78,19 +56,11 @@ class ConnectionNotInDB {
     }
 
     /**
-     * @return mixed
+     * @param mixed $level
      */
-    public function getCreated()
+    public function setLevel($level)
     {
-        return $this->created;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
+        $this->level = $level;
     }
 
     /**
@@ -102,56 +72,6 @@ class ConnectionNotInDB {
     }
 
     /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-
-
-    /**
-     * @param mixed $character
-     */
-    public function setCharacter($character)
-    {
-        $this->character = $character;
-    }
-
-    /**
-     * @param mixed $created
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @param mixed $level
-     */
-    public function setLevel($level)
-    {
-        $this->level = $level;
-    }
-
-    /**
      * @param mixed $name
      */
     public function setName($name)
@@ -160,11 +80,11 @@ class ConnectionNotInDB {
     }
 
     /**
-     * @param mixed $updated
+     * @return mixed
      */
-    public function setUpdated($updated)
+    public function getName()
     {
-        $this->updated = $updated;
+        return $this->name;
     }
 
 

@@ -11,16 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\PostRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Post
+class Post  extends AbstractEntity
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
 
     /**
      * @var string
@@ -44,74 +36,30 @@ class Post
     protected $title;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @param int $age
      */
-    protected $updated;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    public function __construct()
+    public function setAge($age)
     {
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
+        $this->age = $age;
     }
 
     /**
-     * @ORM\PreUpdate
+     * @return int
      */
-    public function setUpdatedValue()
+    public function getAge()
     {
-        $this->setUpdated(new \DateTime());
-    }
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
+        return $this->age;
     }
 
     /**
-     * @return mixed
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-
-
-    /**
-     * Set name
-     *
      * @param string $name
-     * @return Post
      */
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
-     * Get name
-     *
      * @return string
      */
     public function getName()
@@ -120,75 +68,20 @@ class Post
     }
 
     /**
-     * Set age
-     *
-     * @param integer $age
-     * @return Post
-     */
-    public function setAge($age)
-    {
-        $this->age = $age;
-
-        return $this;
-    }
-
-    /**
-     * Get age
-     *
-     * @return integer
-     */
-    public function getAge()
-    {
-        return $this->age;
-    }
-
-    /**
-     * Set title
-     *
      * @param string $title
-     * @return Post
      */
     public function setTitle($title)
     {
         $this->title = $title;
-
-        return $this;
     }
 
     /**
-     * Get title
-     *
      * @return string
      */
     public function getTitle()
     {
         return $this->title;
     }
-
-    /**
-     * @param mixed $created
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @param mixed $updated
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-    }
-
 
 
 }

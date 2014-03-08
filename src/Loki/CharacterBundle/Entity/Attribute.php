@@ -11,15 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\AttributeRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Attribute
+class Attribute extends AbstractEntity
 {
-    /**
-     * @var integer
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+
 
     /**
      * @var string
@@ -38,27 +32,11 @@ class Attribute
     protected $skills;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @param mixed $characterLink
      */
-    protected $updated;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    public function __construct()
+    public function setCharacterLink($characterLink)
     {
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedValue()
-    {
-        $this->setUpdated(new \DateTime());
+        $this->characterLink = $characterLink;
     }
 
     /**
@@ -70,11 +48,11 @@ class Attribute
     }
 
     /**
-     * @return int
+     * @param string $name
      */
-    public function getId()
+    public function setName($name)
     {
-        return $this->id;
+        $this->name = $name;
     }
 
     /**
@@ -86,54 +64,6 @@ class Attribute
     }
 
     /**
-     * @return mixed
-     */
-    public function getSkills()
-    {
-        return $this->skills;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * @param mixed $characterLink
-     */
-    public function setCharacterLink($characterLink)
-    {
-        $this->characterLink = $characterLink;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
      * @param mixed $skills
      */
     public function setSkills($skills)
@@ -142,19 +72,13 @@ class Attribute
     }
 
     /**
-     * @param mixed $created
+     * @return mixed
      */
-    public function setCreated($created)
+    public function getSkills()
     {
-        $this->created = $created;
+        return $this->skills;
     }
 
-    /**
-     * @param mixed $updated
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-    }
+
 
 }

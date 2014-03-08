@@ -14,15 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\CharacterRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Character
+class Character extends AbstractEntity
 {
-    /**
-     * @var integer
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+
 
     /**
      * @var string
@@ -106,162 +100,24 @@ class Character
     protected $connectionsNotInDB;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\ConnectionInDB", mappedBy="owner", fetch="EAGER")
      */
-    protected $updated;
+    protected $connectionsInDB;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
+
 
     public function __construct()
     {
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
+        parent::__construct();
         $this->items = new ArrayCollection();
         $this->connectionsNotInDB = new ArrayCollection();
+        $this->connectionsInDB = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->attributes = new ArrayCollection();
         $this->reputation = 0;
         $this->goodKarma = 0;
         $this->karmapool = 0;
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedValue()
-    {
-        $this->setUpdated(new \DateTime());
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getConnectionsNotInDB()
-    {
-        return $this->connectionsNotInDB;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @return int
-     */
-    public function getGoodKarma()
-    {
-        return $this->goodKarma;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getItems()
-    {
-        return $this->items;
-    }
-
-    /**
-     * @return int
-     */
-    public function getKarmapool()
-    {
-        return $this->karmapool;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOccupation()
-    {
-        return $this->occupation;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRace()
-    {
-        return $this->race;
-    }
-
-    /**
-     * @return int
-     */
-    public function getReputation()
-    {
-        return $this->reputation;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSkills()
-    {
-        return $this->skills;
-    }
-
-    /**
-     * @return int
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * @return \Loki\CharacterBundle\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -273,6 +129,30 @@ class Character
     }
 
     /**
+     * @return mixed
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $connectionsInDB
+     */
+    public function setConnectionsInDB($connectionsInDB)
+    {
+        $this->connectionsInDB = $connectionsInDB;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConnectionsInDB()
+    {
+        return $this->connectionsInDB;
+    }
+
+    /**
      * @param \Doctrine\Common\Collections\Collection $connectionsNotInDB
      */
     public function setConnectionsNotInDB($connectionsNotInDB)
@@ -281,11 +161,11 @@ class Character
     }
 
     /**
-     * @param mixed $created
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function setCreated($created)
+    public function getConnectionsNotInDB()
     {
-        $this->created = $created;
+        return $this->connectionsNotInDB;
     }
 
     /**
@@ -297,6 +177,14 @@ class Character
     }
 
     /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
      * @param int $goodKarma
      */
     public function setGoodKarma($goodKarma)
@@ -305,11 +193,11 @@ class Character
     }
 
     /**
-     * @param int $id
+     * @return int
      */
-    public function setId($id)
+    public function getGoodKarma()
     {
-        $this->id = $id;
+        return $this->goodKarma;
     }
 
     /**
@@ -321,11 +209,27 @@ class Character
     }
 
     /**
-     * @param int $karmaPool
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function setKarmapool($karmaPool)
+    public function getItems()
     {
-        $this->karmapool = $karmaPool;
+        return $this->items;
+    }
+
+    /**
+     * @param int $karmapool
+     */
+    public function setKarmapool($karmapool)
+    {
+        $this->karmapool = $karmapool;
+    }
+
+    /**
+     * @return int
+     */
+    public function getKarmapool()
+    {
+        return $this->karmapool;
     }
 
     /**
@@ -337,11 +241,27 @@ class Character
     }
 
     /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * @param string $occupation
      */
     public function setOccupation($occupation)
     {
         $this->occupation = $occupation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOccupation()
+    {
+        return $this->occupation;
     }
 
     /**
@@ -353,11 +273,27 @@ class Character
     }
 
     /**
+     * @return string
+     */
+    public function getRace()
+    {
+        return $this->race;
+    }
+
+    /**
      * @param int $reputation
      */
     public function setReputation($reputation)
     {
         $this->reputation = $reputation;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReputation()
+    {
+        return $this->reputation;
     }
 
     /**
@@ -369,6 +305,14 @@ class Character
     }
 
     /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSkills()
+    {
+        return $this->skills;
+    }
+
+    /**
      * @param int $type
      */
     public function setType($type)
@@ -377,11 +321,11 @@ class Character
     }
 
     /**
-     * @param mixed $updated
+     * @return int
      */
-    public function setUpdated($updated)
+    public function getType()
     {
-        $this->updated = $updated;
+        return $this->type;
     }
 
     /**
@@ -390,6 +334,14 @@ class Character
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return \Loki\CharacterBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
 

@@ -20,15 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(fields={"character","skill"}, message="Dieser Character hat diese Fähigkeit bereits")
  */
-class CharacterToSkill {
-
-    /**
-     * @var integer
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+class CharacterToSkill extends AbstractEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Character", inversedBy="skills")
@@ -48,27 +40,11 @@ class CharacterToSkill {
     protected $level;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @param mixed $character
      */
-    protected $updated;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    public function __construct()
+    public function setCharacter($character)
     {
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedValue()
-    {
-        $this->setUpdated(new \DateTime());
+        $this->character = $character;
     }
 
     /**
@@ -80,11 +56,11 @@ class CharacterToSkill {
     }
 
     /**
-     * @return int
+     * @param mixed $level
      */
-    public function getId()
+    public function setLevel($level)
     {
-        return $this->id;
+        $this->level = $level;
     }
 
     /**
@@ -96,56 +72,6 @@ class CharacterToSkill {
     }
 
     /**
-     * @return mixed
-     */
-    public function getSkill()
-    {
-        return $this->skill;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-
-
-    /**
-     * @param mixed $character
-     */
-    public function setCharacter($character)
-    {
-        $this->character = $character;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @param mixed $level
-     */
-    public function setLevel($level)
-    {
-        $this->level = $level;
-    }
-
-    /**
      * @param mixed $skill
      */
     public function setSkill($skill)
@@ -154,21 +80,12 @@ class CharacterToSkill {
     }
 
     /**
-     * @param mixed $created
+     * @return mixed
      */
-    public function setCreated($created)
+    public function getSkill()
     {
-        $this->created = $created;
+        return $this->skill;
     }
-
-    /**
-     * @param mixed $updated
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-    }
-
 
 
 } 

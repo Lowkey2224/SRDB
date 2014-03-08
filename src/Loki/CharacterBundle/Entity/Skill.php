@@ -11,16 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\SkillRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Skill
+class Skill extends AbstractEntity
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
 
     /**
      * @var string
@@ -48,27 +40,11 @@ class Skill
     protected $characterLink;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @param mixed $attribute
      */
-    protected $updated;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    public function __construct()
+    public function setAttribute($attribute)
     {
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedValue()
-    {
-        $this->setUpdated(new \DateTime());
+        $this->attribute = $attribute;
     }
 
     /**
@@ -80,62 +56,6 @@ class Skill
     }
 
     /**
-     * @return mixed
-     */
-    public function getCharacterLink()
-    {
-        return $this->characterLink;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return int
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * @param mixed $attribute
-     */
-    public function setAttribute($attribute)
-    {
-        $this->attribute = $attribute;
-    }
-
-    /**
      * @param mixed $characterLink
      */
     public function setCharacterLink($characterLink)
@@ -144,11 +64,11 @@ class Skill
     }
 
     /**
-     * @param int $id
+     * @return mixed
      */
-    public function setId($id)
+    public function getCharacterLink()
     {
-        $this->id = $id;
+        return $this->characterLink;
     }
 
     /**
@@ -160,6 +80,14 @@ class Skill
     }
 
     /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * @param int $type
      */
     public function setType($type)
@@ -168,21 +96,12 @@ class Skill
     }
 
     /**
-     * @param mixed $created
+     * @return int
      */
-    public function setCreated($created)
+    public function getType()
     {
-        $this->created = $created;
+        return $this->type;
     }
-
-    /**
-     * @param mixed $updated
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-    }
-
 
 
 }

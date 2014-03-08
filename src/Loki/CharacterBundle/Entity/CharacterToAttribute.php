@@ -19,15 +19,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(fields={"character","attribute"}, message="Dieser Character hat dieses Attribut bereits")
  */
-class CharacterToAttribute {
-
-    /**
-     * @var integer
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+class CharacterToAttribute extends AbstractEntity
+{
 
     /**
      * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Character", inversedBy="attributes")
@@ -47,27 +40,11 @@ class CharacterToAttribute {
     protected $level;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @param mixed $attribute
      */
-    protected $updated;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    public function __construct()
+    public function setAttribute($attribute)
     {
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedValue()
-    {
-        $this->setUpdated(new \DateTime());
+        $this->attribute = $attribute;
     }
 
     /**
@@ -79,54 +56,6 @@ class CharacterToAttribute {
     }
 
     /**
-     * @return mixed
-     */
-    public function getCharacter()
-    {
-        return $this->character;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLevel()
-    {
-        return $this->level;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * @param mixed $attribute
-     */
-    public function setAttribute($attribute)
-    {
-        $this->attribute = $attribute;
-    }
-
-    /**
      * @param mixed $character
      */
     public function setCharacter($character)
@@ -135,11 +64,11 @@ class CharacterToAttribute {
     }
 
     /**
-     * @param int $id
+     * @return mixed
      */
-    public function setId($id)
+    public function getCharacter()
     {
-        $this->id = $id;
+        return $this->character;
     }
 
     /**
@@ -151,21 +80,12 @@ class CharacterToAttribute {
     }
 
     /**
-     * @param mixed $created
+     * @return mixed
      */
-    public function setCreated($created)
+    public function getLevel()
     {
-        $this->created = $created;
+        return $this->level;
     }
-
-    /**
-     * @param mixed $updated
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-    }
-
 
 
 } 

@@ -7,7 +7,16 @@
 
 namespace Loki\CharacterBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 
-class ConnectionInDB {
+/**
+ * Skill
+ *
+ * @ORM\Table("`connection_in_db`")
+ * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\ConnectionInDBRepository")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class ConnectionInDB extends AbstractEntity
+{
 
 } 
