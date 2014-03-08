@@ -5,7 +5,7 @@
         <div class="characterForm">
             {{ form_start(form) }}
             {% for flashMessage in app.session.getFlashBag.get('form-error') %}
-                <div class="alert alert-error">
+                <div class="alert alert-info">
                     {{ flashMessage }}
                 </div>
             {% endfor %}

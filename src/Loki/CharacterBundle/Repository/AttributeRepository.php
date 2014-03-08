@@ -128,4 +128,77 @@ class AttributeRepository extends MyBaseRepository{
         return $entry;
     }
 
+    public function getCombatpool()
+    {
+        $entry = $this->findOneByName("Kampfpool");
+        if(is_null($entry))
+        {
+            $entry = new Attribute();
+            $entry->setName("Kampfpool");
+            $this->persist($entry);
+        }
+        return $entry;
+    }
+
+    public function getAstralcombatpool()
+    {
+        $entry = $this->findOneByName("Astralkampfpool");
+        if(is_null($entry))
+        {
+            $entry = new Attribute();
+            $entry->setName("Astralkampfpool");
+            $this->persist($entry);
+        }
+        return $entry;
+    }
+
+    public function getTaskpool()
+    {
+        $entry = $this->findOneByName("Taskpool");
+        if(is_null($entry))
+        {
+            $entry = new Attribute();
+            $entry->setName("Taskpool");
+            $this->persist($entry);
+        }
+        return $entry;
+    }
+
+    public function getSorcerypool()
+    {
+        $entry = $this->findOneByName("Hexereipool");
+        if(is_null($entry))
+        {
+            $entry = new Attribute();
+            $entry->setName("Hexereipool");
+            $this->persist($entry);
+        }
+        return $entry;
+    }
+
+    public function getHackingpool()
+    {
+        $entry = $this->findOneByName("Hackingpool");
+        if(is_null($entry))
+        {
+            $entry = new Attribute();
+            $entry->setName("Hackingpool");
+            $this->persist($entry);
+        }
+        return $entry;
+    }
+
+    public function getControlpool()
+    {
+        $entry = $this->findOneByName("Steuerpool");
+        if(is_null($entry))
+        {
+            $entry = new Attribute();
+            $entry->setName("Steuerpool");
+            $this->persist($entry);
+        }
+        return $entry;
+    }
+
+
 } 

@@ -4,14 +4,13 @@
         Skill zu {{ character.name }} hinzufügen.
     </div>
     {% block attributeForm %}
+        {% for flashMessage in app.session.getFlashBag.get('form-error') %}
+            <div class="alert alert-info">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
         <div class="form-horizontal">
             {{ form_start(form) }}
-            {% for flashMessage in app.session.getFlashBag.get('form-error') %}
-                <div class="alert alert-error">
-                    {{ flashMessage }}
-                </div>
-            {% endfor %}
-
             {{ attribute.name }}
             {{ form_errors(form.level) }}
             {{ form_widget(form.level) }}

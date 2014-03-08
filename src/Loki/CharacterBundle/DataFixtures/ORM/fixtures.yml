@@ -58,6 +58,20 @@ Loki\CharacterBundle\Entity\Attribute:
     mag:
         name: Magie
 
+    kp:
+        name: Kampfpool
+    akp:
+        name: Astralkampfpool
+    tp:
+        name: Taskpool
+    hp:
+        name: Hexereipool
+    hackingpool:
+        name: Hackingpool
+    sp:
+        name: Steuerpool
+
+
 Loki\CharacterBundle\Entity\Skill:
     ett:
         name: Gebräuche
@@ -114,8 +128,36 @@ Loki\CharacterBundle\Entity\CharacterToAttribute:
         character: @<current()>
         attribute: @mag
         level: 0
-        
 
+    mag{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @kp
+        level: 0
+    mag{Lodur, Nigel}:
+
+        character: @<current()>
+        attribute: @akp
+        level: 0
+
+    mag{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @tp
+        level: 0
+
+    mag{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @hp
+        level: 0
+
+    mag{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @hackingpool
+        level: 0
+
+    mag{Lodur, Nigel}:
+        character: @<current()>
+        attribute: @sp
+        level: 0
 
 Loki\CharacterBundle\Entity\CharacterToSkill:
 

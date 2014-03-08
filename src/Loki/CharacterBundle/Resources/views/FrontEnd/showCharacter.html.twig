@@ -1,0 +1,51 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>{{ char.name }}</th>
+        <th>{% if editable == true %}
+            <a href="{{ path("loki_character_edit_character",{"characterId": char.id}) }}"><i
+                            class="glyphicon glyphicon-pencil"></i></a>{% endif %}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>User: {{ username }}</td>
+    </tr>
+    <tr>
+        <td>{% if char.type == 2 %}N{% endif %}SC</td>
+    </tr>
+    <tr>
+        <td>Rasse: {{ char.race }}</td>
+    </tr>
+    <tr>
+        <td>Reputation: {{ char.reputation }}</td>
+    </tr>
+    <tr>
+        <td>Karmapool: {{ char.karmapool }}</td>
+    </tr>
+    <tr>
+        <td>Gutes Karma: {{ char.goodKarma }}</td>
+    </tr>
+    <tr>
+        <td>Proffession{{ char.occupation }}</td>
+    </tr>
+    <tr>
+        <td>
+                        <span class="tooltipSpan"
+                              data-content="{{ char.description }}">
+                            Beschreibung:
+                            {{ char.description[:50] }}
+                            {% if char.description|length > 51 %}
+                                ...
+                            {% endif %}
+                            </span></td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    </tbody>
+</table>

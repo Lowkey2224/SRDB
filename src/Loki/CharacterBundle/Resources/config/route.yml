@@ -9,9 +9,21 @@
 #    prefix:   /show
 
 
-#loki_character_add_skill:
-#    pattern: /add/skill
-#    defaults: {_controller: LokiCharacterBundle:BackEnd:addSkill}
+loki_character_skill_index:
+    pattern: /skill/index
+    defaults: {_controller: LokiCharacterBundle:Skill:index}
+
+loki_character_skill_edit:
+    pattern: /skill/edit/{skillId}
+    defaults: {_controller: LokiCharacterBundle:Skill:edit, skillId: 0}
+    requirements:
+        skillId: \d+
+
+loki_character_skill_delete:
+    pattern: /skill/delete/{skillId}
+    defaults: {_controller: LokiCharacterBundle:Skill:delete}
+    requirements:
+        skillId: \d+
 
 loki_character_show_character_for_user:
     pattern: /show/user/{userId}
@@ -20,10 +32,11 @@ loki_character_show_character_for_user:
         characterId: \d+
 
 loki_character_show_character:
-    pattern: /show/{characterId}
-    defaults: {_controller: LokiCharacterBundle:FrontEnd:show, characterId:0}
+    pattern: /show/{characterId}/{showAll}
+    defaults: {_controller: LokiCharacterBundle:FrontEnd:show, characterId:0, showAll = 0}
     requirements:
         characterId: \d+
+        showAll: \d
 
 loki_character_edit_character:
     pattern: /edit/{characterId}

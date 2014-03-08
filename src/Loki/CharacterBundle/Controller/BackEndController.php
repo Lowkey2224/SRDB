@@ -47,9 +47,10 @@ class BackEndController extends Controller
 
         $charRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character");
         $char = $charRepo->findOneById($characterId);
+        $new = false;
         if (is_null($char)) {
             $char = new Character();
-            $this->get('loki_character.character')->addAttributesToCharacter($char);
+            $new = true;
         }
         if (!$userService->isAllowedToEdit($this->getUser(), $char)) {
             return $this->redirect(
@@ -65,6 +66,10 @@ class BackEndController extends Controller
             if ($form->isValid()) {
                 $char->setUser($this->getUser());
                 $entry = $charRepo->persist($char);
+                if($new)
+                {
+                    $this->get('loki_character.character')->addAttributesToCharacter($char);
+                }
                 if (is_null($entry)) {
                     $this->get('session')
                         ->getFlashBag()
@@ -79,19 +84,19 @@ class BackEndController extends Controller
                 } else {
                     $this->get('session')
                         ->getFlashBag()
-                        ->add('success', 'Character '.$char->getName().' wurde gespeichert.');
+                        ->add('success', 'Character ' . $char->getName() . ' wurde gespeichert.');
                 }
 
                 return $this->redirect(
                     $this->generateUrl('loki_character_show_character', array("characterId" => $entry->getId()))
                 );
-            }
+            } else {
+                $errorHandler = $this->get('loki_character.errorHandler');
+                $errorArray = $errorHandler->getErrorMessages($form);
+                foreach ($errorArray as $error) {
+                    $this->get('session')->getFlashBag()->add('form-error', $error);
+                }
 
-        } else {
-            $errorHandler = $this->get('loki_character.errorHandler');
-            $errorArray = $errorHandler->getErrorMessages($form);
-            foreach ($errorArray as $error) {
-                $this->get('session')->getFlashBag()->add('form-error', $error);
             }
         }
 
@@ -127,7 +132,10 @@ class BackEndController extends Controller
         $charToSkillRepo->delete($charSkill);
         $this->get('session')
             ->getFlashBag()
-            ->add('success', 'Skill '.$charSkill->getSkill()->getName().' wurde für '.$char->getName().' gelöscht.');
+            ->add(
+                'success',
+                'Skill ' . $charSkill->getSkill()->getName() . ' wurde für ' . $char->getName() . ' gelöscht.'
+            );
 
         return $this->redirect(
             $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
@@ -167,7 +175,11 @@ class BackEndController extends Controller
                 $charskill = $charToSkillRepo->persist($charskill);
                 $this->get('session')
                     ->getFlashBag()
-                    ->add('success', 'SKill '.$charskill->getSkill()->getName().' wurde für '.$char->getName().' gespeichert.');
+                    ->add(
+                        'success',
+                        'SKill ' . $charskill->getSkill()->getName() . ' wurde für ' . $char->getName(
+                        ) . ' gespeichert.'
+                    );
 
                 return $this->redirect(
                     $this->generateUrl(
@@ -175,6 +187,12 @@ class BackEndController extends Controller
                         array('characterId' => $characterId)
                     )
                 );
+            } else {
+                $errorHandler = $this->get('loki_character.errorHandler');
+                $errorArray = $errorHandler->getErrorMessages($form);
+                foreach ($errorArray as $error) {
+                    $this->get('session')->getFlashBag()->add('form-error', $error);
+                }
             }
         }
 
@@ -202,9 +220,14 @@ class BackEndController extends Controller
         }
 
         $charToAttributeRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:CharacterToAttribute");
-        $attr = $charToAttributeRepo->findOneBy(array('character' => $char,
-            'attribute' => $this->getDoctrine()->getRepository("LokiCharacterBundle:Attribute")->findOneById($attributeNumber)
-        ));
+        $attr = $charToAttributeRepo->findOneBy(
+            array(
+                'character' => $char,
+                'attribute' => $this->getDoctrine()->getRepository("LokiCharacterBundle:Attribute")->findOneById(
+                        $attributeNumber
+                    )
+            )
+        );
         if (!$userService->isAllowedToEdit($this->getUser(), $char, $attr)) {
             return $this->redirect(
                 $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
@@ -224,6 +247,12 @@ class BackEndController extends Controller
                 $this->get('session')
                     ->getFlashBag()
                     ->add('success', 'Eintrag gespeichert.');
+            } else {
+                $errorHandler = $this->get('loki_character.errorHandler');
+                $errorArray = $errorHandler->getErrorMessages($form);
+                foreach ($errorArray as $error) {
+                    $this->get('session')->getFlashBag()->add('form-error', $error);
+                }
             }
 
             return $this->redirect(

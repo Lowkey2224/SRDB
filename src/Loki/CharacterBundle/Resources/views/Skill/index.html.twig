@@ -1,0 +1,108 @@
+{% extends "LokiCharacterBundle::front.html.twig" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Aktionsfertigkeiten</th>
+                    <th></th>
+                    <th>
+                        {% if editable == true %}
+                        <a href="{{ path("loki_character_skill_edit") }}"><i
+                                    class="glyphicon glyphicon-plus"></i></a>{% endif %}
+                    </th>
+                </tr>
+                {#<tr>#}
+                    {#<th>Skill</th>#}
+                    {#<th>Attribut</th>#}
+
+                {#</tr>#}
+                </thead>
+                <tbody>
+                {% for skill in actionSkills %}
+                    <tr>
+                        <td>{{ skill.name }}</td>
+                        <td>{{ skill.attribute.name }}</td>
+                        <td>{% if editable == true %}
+                                <a href="{{ path("loki_character_skill_edit", {'skillId': skill.id}) }}"><i
+                                            class="glyphicon glyphicon-pencil"></i></a>
+                            {% endif %}
+                            {% if isAdmin == true %}
+                                <a href="{{ path("loki_character_skill_delete", {'skillId': skill.id}) }}">
+                                    <i class="glyphicon glyphicon-remove"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            {#<h2>Attribute:</h2>#}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Wissensskills</th>
+                    <th></th>
+                    <th>
+                        {% if editable == true %}
+                        <a href="{{ path("loki_character_skill_edit") }}"><i
+                                    class="glyphicon glyphicon-plus"></i></a>{% endif %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for skill in knowledgeSkills %}
+                    <tr>
+                        <td>{{ skill.name }}</td>
+                        <td>{{ skill.attribute.name }}</td>
+                        <td>{% if editable == true %}
+                                <a href="{{ path("loki_character_skill_edit", {'skillId': skill.id}) }}"><i
+                                            class="glyphicon glyphicon-pencil"></i></a>
+                            {% endif %}
+                            {% if isAdmin == true %}
+                                <a href="{{ path("loki_character_skill_delete", {'skillId': skill.id}) }}">
+                                    <i class="glyphicon glyphicon-remove"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Sprachen</th>
+                    <th></th>
+                    <th>{% if editable == true %}
+                            <a href="{{ path("loki_character_skill_edit") }}"><i
+                                        class="glyphicon glyphicon-plus"></i> </a>
+                        {% endif %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for skill in languageSkills %}
+                    <tr>
+                        <td>{{ skill.name }}</td>
+                        <td>{{ skill.attribute.name }}</td>
+                        <td>{% if editable == true %}
+                                <a href="{{ path("loki_character_skill_edit", {'skillId': skill.id}) }}"><i
+                                            class="glyphicon glyphicon-pencil"></i></a>
+                            {% endif %}
+                            {% if isAdmin == true %}
+                                <a href="{{ path("loki_character_skill_delete", {'skillId': skill.id}) }}">
+                                    <i class="glyphicon glyphicon-remove"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

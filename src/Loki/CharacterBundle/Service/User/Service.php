@@ -23,6 +23,12 @@ class Service {
         return $this->securityContext->isGranted('ROLE_USER');
     }
 
+    public function isAdmin()
+    {
+        return ($this->securityContext->isGranted('ROLE_ADMIN')
+        || $this->securityContext->isGranted('ROLE_SUPERADMIN'));
+    }
+
     public function isAllowedToEdit($user, $character, $childEntity = null)
     {
 //        if($this->securityContext->isGranted('ROLE_ADMIN'))

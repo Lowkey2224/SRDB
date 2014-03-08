@@ -63,10 +63,10 @@ class FrontEndController extends Controller
 
 //require={"name"="\d+"}
     /**
-     * @Route("/show/{name}", defaults = {"name"="0"}, name="_default_show")
+     * @Route("/show/{$characterId}/$showAll")
      * @Template()
      */
-    public function showAction($characterId)
+    public function showAction($characterId, $showAll= 0)
     {
         $userService = $this->get('loki_character.user');
 
@@ -98,6 +98,7 @@ class FrontEndController extends Controller
                 "kipowers" => array(),
                 "cyberware" => array(),
                 "editable" => $userService->isAllowedToEdit($this->getUser(), $char),
+                'showAll' => ($showAll == 1)?true:false,
             );
 
 

@@ -2,19 +2,21 @@
 {% block content %}
     <div>
         Skill {% if charSkill.skill is not null %}
-            von {{ character.name }} bearbeiten.
+            von <a href="
+            {{ path("loki_character_show_character", {'characterId':character.id}) }}
+            ">{{ character.name }}</a> bearbeiten.
         {% else %}
             zu  {{ character.name }} hinzufügen.
         {% endif %}
     </div>
     {% block attributeForm %}
+        {% for flashMessage in app.session.getFlashBag.get('form-error') %}
+            <div class="alert alert-info">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
         <div class="form-horizontal">
             {{ form_start(form) }}
-            {% for flashMessage in app.session.getFlashBag.get('form-error') %}
-                <div class="alert alert-error">
-                    {{ flashMessage }}
-                </div>
-            {% endfor %}
             {% if charSkill.skill is not null %}
                 {{ charSkill.skill.name }}
             {% endif %}
