@@ -64,17 +64,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% set attrCount = 1 %}
                 {% for attributEntry in attributes %}
                     <tr>
                         <td>{{ attributEntry.attribute.name }}: {{ attributEntry.level }}</td>
                         <td>{% if editable == true %}
-                                <a href="{{ path("loki_character_edit_character_attributes",{"characterId": char.id, "attributeNumber":attrCount}) }}"><i
+                                <a href="{{ path("loki_character_edit_character_attributes",{"characterId": char.id, "attributeNumber":attributEntry.attribute.id}) }}"><i
                                             class="glyphicon glyphicon-pencil"></i></a>
                             {% endif %}
                         </td>
                     </tr>
-                    {% set attrCount = attrCount +1 %}
                 {% endfor %}
                 </tbody>
             </table>

@@ -27,26 +27,35 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class BackEndController extends Controller{
+class BackEndController extends Controller
+{
 
     /**
      * Action for adding new Characters
      * @Route("/edit/$characterId")
-
      * @Template()
      */
     public function editCharacterAction($characterId = 0)
     {
         $userService = $this->get('loki_character.user');
-        if(!$userService->isLoggedIn())
-        {
+        if (!$userService->isLoggedIn()) {
             return $this->redirect(
                 $this->generateUrl('loki_character_index')
             );
         }
+
+
         $charRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character");
-        $char = is_null($charRepo->findOneById($characterId))?new Character():$charRepo->findOneById($characterId);
-        $userService->isAllowedToEdit($this->getUser(), $char);
+        $char = $charRepo->findOneById($characterId);
+        if (is_null($char)) {
+            $char = new Character();
+            $this->get('loki_character.character')->addAttributesToCharacter($char);
+        }
+        if (!$userService->isAllowedToEdit($this->getUser(), $char)) {
+            return $this->redirect(
+                $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
+            );
+        }
 
         $form = $this->createForm(new CharacterType(), $char);
         $request = $this->getRequest();
@@ -54,125 +63,41 @@ class BackEndController extends Controller{
             $form->submit($request);
 
             if ($form->isValid()) {
-
-                $this->get('loki_character.attribute')->initializeAttributes();
                 $char->setUser($this->getUser());
                 $entry = $charRepo->persist($char);
                 if (is_null($entry)) {
                     $this->get('session')
                         ->getFlashBag()
-                        ->add('error', 'Eintrag existiert bereits');
+                        ->add('error', 'Das sollte nicht passieren. Character wurde nicht gespeichert!');
+
                     return $this->redirect(
-                        $this->generateUrl('loki_character_show_character_for_user', array("userId" => $this->getUser()->getId()))
+                        $this->generateUrl(
+                            'loki_character_show_character_for_user',
+                            array("userId" => $this->getUser()->getId())
+                        )
                     );
                 } else {
                     $this->get('session')
                         ->getFlashBag()
-                        ->add('success', 'Eintrag gespeichert.');
-
-                    if(is_null($char->getAttributes())|| $char->getAttributes()->isEmpty()){
-                        $this->addAttributesToCharacter($entry,
-                            $this->getDoctrine()->getRepository('LokiCharacterBundle:CharacterToAttribute'),
-                            $this->getDoctrine()->getRepository('LokiCharacterBundle:Attribute')
-                    );
-                    }
-                    return $this->redirect(
-                        $this->generateUrl('loki_character_show_character', array("characterId" => $entry->getId()))
-                    );
+                        ->add('success', 'Character '.$char->getName().' wurde gespeichert.');
                 }
 
-            } else {
-                $errorHandler = $this->get('hallo_errorhandler');
-                $errorArray = $errorHandler->getErrorMessages($form);
-                foreach ($errorArray as $error) {
-                    $this->get('session')->getFlashBag()->add('form-error', $error);
-                }
-            }
-        }
-
-        return(array(
-            'form' => $form->createView(),
-        ));
-    }
-
-
-
-    /**
-     * Action for adding new Characters
-     * @Route("/add/skill")
-
-     * @Template()
-     */
-    public function addSkillAction()
-    {
-        if(!$this->get('loki_character.user')->isLoggedIn())
-        {
-            return $this->redirect(
-                $this->generateUrl('loki_character_index')
-            );
-        }
-        $skill = new Skill();
-        $form = $this->createForm(new SkillType(), $skill);
-        $request = $this->getRequest();
-        if ($request->getMethod() == 'POST') {
-            $form->submit($request);
-            $skillRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Skill");
-            if($form->isValid())
-            {
-                $skill = $skillRepo->persist($skill);
-                $this->get('session')
-                    ->getFlashBag()
-                    ->add('success', 'Eintrag gespeichert.');
                 return $this->redirect(
-                    $this->generateUrl('loki_character_index')
-                );
-            }
-        }
-
-        return(array(
-            'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * @param $characterId
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
-     * @Route("/add/skill/{characterId")
-     * @Template()
-     */
-    public function addSkillToCharacterAction($characterId)
-    {
-        $charRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character");
-        $char = $charRepo->findOneById($characterId);
-        if(!$this->get('loki_character.user')->isLoggedIn() || is_null($char))
-        {
-            return $this->redirect(
-                $this->generateUrl('loki_character_index')
-            );
-        }
-        $charSkill = new CharacterToSkill();
-        $form = $this->createForm(new CharacterToSkillType(), $charSkill);
-        $request = $this->getRequest();
-        if($request->getMethod() == 'POST')
-        {
-            $form->submit($request);
-            $charToSkillRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:CharacterToSkill");
-            if($form->isValid())
-            {
-                $charSkill->setCharacter($char);
-                $charToSkillRepo->persist($charSkill);
-                $this->get('session')
-                    ->getFlashBag()
-                    ->add('success', 'Eintrag gespeichert.');
-                return $this->redirect(
-                    $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
+                    $this->generateUrl('loki_character_show_character', array("characterId" => $entry->getId()))
                 );
             }
 
+        } else {
+            $errorHandler = $this->get('hallo_errorhandler');
+            $errorArray = $errorHandler->getErrorMessages($form);
+            foreach ($errorArray as $error) {
+                $this->get('session')->getFlashBag()->add('form-error', $error);
+            }
         }
-        return(array(
+
+
+        return (array(
             'form' => $form->createView(),
-            'character' => $char
         ));
     }
 
@@ -184,26 +109,32 @@ class BackEndController extends Controller{
      */
     public function deleteCharacterSkillAction($characterId, $skillId)
     {
+        $userService = $this->get('loki_character.user');
+        if (!$userService->isLoggedIn()) {
+            return $this->redirect($this->generateUrl('loki_character_index'));
+        }
+
         $charRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character");
         $char = $charRepo->findOneById($characterId);
         $charToSkillRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:CharacterToSkill");
         $charSkill = $charToSkillRepo->findOneById($skillId);
-        if(!$this->get('loki_character.user')->isLoggedIn() || is_null($char) || is_null($charSkill) )
-        {
+        $userService = $this->get('loki_character.user');
+        if (!$userService->isAllowedToEdit($this->getUser(), $char)) {
             return $this->redirect(
-                $this->generateUrl('loki_character_index')
+                $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
             );
         }
         $charToSkillRepo->delete($charSkill);
         $this->get('session')
             ->getFlashBag()
-            ->add('success', 'Eintrag gelöscht.');
+            ->add('success', 'Skill '.$charSkill->getSkill()->getName().' wurde für '.$char->getName().' gelöscht.');
+
         return $this->redirect(
             $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
         );
     }
-    /**
 
+    /**
      * @Route("/edit/{characterId}/skill/{skillId}")
      * @Template()
      */
@@ -211,38 +142,44 @@ class BackEndController extends Controller{
     {
         $charRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character");
         $char = $charRepo->findOneById($characterId);
-        $charToSkillRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:CharacterToSkill");
-        $charskill = $charToSkillRepo->findOneById($skillId);
-        if(!$this->get('loki_character.user')->isLoggedIn()||is_null($char))
-        {
-            return $this->redirect(
-                $this->generateUrl('loki_character_index')
-            );
+        $userService = $this->get('loki_character.user');
+        if (!$userService->isLoggedIn() || is_null($char)) {
+            return $this->redirect($this->generateUrl('loki_character_index'));
         }
-        if(is_null($charskill))
-        {
+        $charToSkillRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:CharacterToSkill");
+        if (is_null($charToSkillRepo->findOneById($skillId))) {
+            $charskill = new CharacterToSkill();
+            $charskill->setCharacter($char);
+        } else {
+            $charskill = $charToSkillRepo->findOneById($skillId);
+        }
+
+        if (!$userService->isAllowedToEdit($this->getUser(), $char, $charskill)) {
             return $this->redirect(
-                $this->generateUrl('loki_character_add_skill_to_character', array("characterId" => $characterId))
+                $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
             );
         }
         $form = $this->createForm(new CharacterToSkillType(), $charskill);
         $request = $this->getRequest();
-        if($request->getMethod() == 'POST')
-        {
-            $form->bind($request);
-            if($form->isValid())
-            {
+        if ($request->getMethod() == 'POST') {
+            $form->submit($request);
+            if ($form->isValid()) {
                 $charskill = $charToSkillRepo->persist($charskill);
                 $this->get('session')
                     ->getFlashBag()
-                    ->add('success', 'Eintrag gespeichert.');
-                return $this->redirect($this->generateUrl(
-                       'loki_character_show_character', array('characterId' => $characterId)
-                    ));
+                    ->add('success', 'SKill '.$charskill->getSkill()->getName().' wurde für '.$char->getName().' gespeichert.');
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'loki_character_show_character',
+                        array('characterId' => $characterId)
+                    )
+                );
             }
         }
+
         return (array(
-           'form' => $form->createView(),
+            'form' => $form->createView(),
             'charSkill' => $charskill,
             'character' => $char,
         ));
@@ -256,19 +193,24 @@ class BackEndController extends Controller{
      */
     public function editCharacterAttributeAction($characterId, $attributeNumber)
     {
-        if(!$this->get('loki_character.user')->isLoggedIn())
-        {
+        $char = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character")->findOneById($characterId);
+        $userService = $this->get('loki_character.user');
+        if (!$userService->isLoggedIn() || is_null($char)) {
             return $this->redirect(
                 $this->generateUrl('loki_character_index')
             );
         }
-        $char = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character")->findOneById($characterId);
+
         $charToAttributeRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:CharacterToAttribute");
-        $attr = $this->getCharacterAttributeByAttributeId($char,$attributeNumber,$charToAttributeRepo,
-            $this->getDoctrine()->getRepository("LokiCharacterBundle:Attribute")
-        );
-        if(is_null($attr))
-        {
+        $attr = $charToAttributeRepo->findOneBy(array('character' => $char,
+            'attribute' => $this->getDoctrine()->getRepository("LokiCharacterBundle:Attribute")->findOneById($attributeNumber)
+        ));
+        if (!$userService->isAllowedToEdit($this->getUser(), $char, $attr)) {
+            return $this->redirect(
+                $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
+            );
+        }
+        if (is_null($attr)) {
             return $this->redirect(
                 $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
             );
@@ -277,60 +219,24 @@ class BackEndController extends Controller{
         $request = $this->getRequest();
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
-            if($form->isValid())
-            {
+            if ($form->isValid()) {
                 $attr = $charToAttributeRepo->persist($attr);
                 $this->get('session')
                     ->getFlashBag()
                     ->add('success', 'Eintrag gespeichert.');
             }
+
             return $this->redirect(
                 $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
             );
 
         }
 
-        return(array(
+        return (array(
             'attribute' => $attr->getAttribute(),
             'character' => $char,
             'form' => $form->createView(),
         ));
-
-    }
-
-
-
-    private function addAttributesToCharacter($character, $characterToAttributeRepository, $attrRepo)
-    {
-        $repo = $characterToAttributeRepository;
-        $attr = array();
-        for($i = 1 ; $i<=8; $i++)
-        {
-            $attr[$i] = new CharacterToAttribute();
-            $attr[$i]->setLevel(1);
-            $attr[$i]->setCharacter($character);
-        }
-        $attr[1]->setAttribute($attrRepo->getConstitution());
-        $attr[2]->setAttribute($attrRepo->getQuickness());
-        $attr[3]->setAttribute($attrRepo->getStrength());
-        $attr[4]->setAttribute($attrRepo->getCharisma());
-        $attr[5]->setAttribute($attrRepo->getIntelligence());
-        $attr[6]->setAttribute($attrRepo->getWillpower());
-        $attr[7]->setAttribute($attrRepo->getEssence());
-        $attr[8]->setAttribute($attrRepo->getMagic());
-        for($i = 1 ; $i<=8; $i++)
-        {
-
-            $repo->persist($attr[$i]);
-        }
-    }
-
-    private function getCharacterAttributeByAttributeId($char, $attrId, $charToAttrrepo, $attrRepo)
-    {
-        $attr = null;
-        $attribute = $attrRepo->findOneById($attrId);
-        $attr = $charToAttrrepo->findByOneCharacterAndAttribute($char, $attribute);
-        return $attr;
     }
 
     /**
@@ -344,35 +250,42 @@ class BackEndController extends Controller{
      * @param $user User der aktuelle Benutzer
      * @return bool|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    private function warmup($charId,$charRepo, $otherId, $otherRepo, $user)
+    private function warmup($charId, $charRepo, $otherId, $otherRepo, $user)
     {
         $userService = $this->get('loki_character.user');
-        if(!$userService->isLoggedIn())
-        {
+        if (!$userService->isLoggedIn()) {
             $this->get('session')->getFlashBag()
                 ->add('error', 'Bitte loggen sie sich zuerst ein!');
+
             return $this->redirect(
                 $this->generateUrl('loki_character_index')
             );
         }
 
-        $connection = is_null($otherId)?new ConnectionNotInDB():$otherRepo->findOneById($otherId);
+        $connection = is_null($otherId) ? new ConnectionNotInDB() : $otherRepo->findOneById($otherId);
         $char = $charRepo->findOneById($charId);
-        if(is_null($connection) || is_null($char))
-        {
+        if (is_null($connection) || is_null($char)) {
             $this->get('session')->getFlashBag()
                 ->add('error', 'Das ist nicht der Eintrag den sie suchen');
-            return $this->redirect($this->generateUrl(
-                    "loki_show_character", array("characterId" => $charId)
-                ));
+
+            return $this->redirect(
+                $this->generateUrl(
+                    "loki_show_character",
+                    array("characterId" => $charId)
+                )
+            );
         }
-        if(!$userService->isAllowedToEdit($user, $char))
-        {
+        if (!$userService->isAllowedToEdit($user, $char)) {
             $this->get('session')->getFlashBag()
                 ->add('error', 'Das ist nicht der Eintrag den sie suchen');
-            return $this->redirect($this->generateUrl(
-                    "loki_character_index"));
+
+            return $this->redirect(
+                $this->generateUrl(
+                    "loki_character_index"
+                )
+            );
         }
+
         return true;
     }
 

@@ -27,6 +27,7 @@ class ConnectionNotInDB extends AbstractEntity{
 
 
     /**
+     * @var String der Connection
      * @ORM\Column(type="string")
      */
     protected $target;
@@ -36,15 +37,24 @@ class ConnectionNotInDB extends AbstractEntity{
      * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Character", inversedBy="connectionsNotInDB")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    protected $owner;
+    protected $character;
     /**
      * integer @var
      * @ORM\Column(type="integer")
      */
     protected $level;
 
+
     /**
-     * @param mixed $level
+     * @return String
+     */
+    public function getName()
+    {
+        return $this->target;
+    }
+
+    /**
+     * @param integer $level
      */
     public function setLevel($level)
     {
@@ -62,17 +72,17 @@ class ConnectionNotInDB extends AbstractEntity{
     /**
      * @param mixed $owner
      */
-    public function setOwner($owner)
+    public function setCharacter($owner)
     {
-        $this->owner = $owner;
+        $this->character = $owner;
     }
 
     /**
      * @return mixed
      */
-    public function getOwner()
+    public function getCharacter()
     {
-        return $this->owner;
+        return $this->character;
     }
 
 

@@ -1,7 +1,11 @@
 {%  extends "LokiCharacterBundle::front.html.twig" %}
 {% block content %}
     <div>
-        Skill von {{ character.name }} bearbeiten.
+        Skill {% if charSkill.skill is not null %}
+            von {{ character.name }} bearbeiten.
+        {% else %}
+            zu  {{ character.name }} hinzufügen.
+        {% endif %}
     </div>
     {% block attributeForm %}
         <div class="form-horizontal">
@@ -11,8 +15,9 @@
                     {{ flashMessage }}
                 </div>
             {% endfor %}
-
-            {{ charSkill.skill.name }}
+            {% if charSkill.skill is not null %}
+                {{ charSkill.skill.name }}
+            {% endif %}
             {{ form_errors(form.level) }}
             {{ form_widget(form.level) }}
             {{ form_row (form.skill) }}

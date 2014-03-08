@@ -39,8 +39,4 @@ services:
 
   loki_character.character:
       class: "%loki_character.service%"
-      arguments: ["@loki_character.attribute", "@loki_character.character.repo", "@loki_character.characterToAttribute.repo"]
-
-  loki_character.attribute:
-      class: "%loki_attribute.service%"
-      arguments: ["@loki_character.attribute.repo"]
+      arguments: ["@loki_character.attribute.repo", "@loki_character.character.repo", "@loki_character.characterToAttribute.repo"]

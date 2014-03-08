@@ -9,6 +9,9 @@
 #    prefix:   /show
 
 
+#loki_character_add_skill:
+#    pattern: /add/skill
+#    defaults: {_controller: LokiCharacterBundle:BackEnd:addSkill}
 
 loki_character_show_character_for_user:
     pattern: /show/user/{userId}
@@ -53,21 +56,12 @@ loki_character_delete_character_skill:
         characterId: \d+
         attributeNumber: \d+
 
-loki_character_add_skill:
-    pattern: /add/skill
-    defaults: {_controller: LokiCharacterBundle:BackEnd:addSkill}
 
 loki_character_add_skill_to_character:
     pattern: /add/{characterId}/skill
-    defaults: {_controller: LokiCharacterBundle:BackEnd:addSkillToCharacter, characterId:0}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:editCharacterSkill, characterId:0, skillId: 0}
     requirements:
         characterId: \d+
-
-#loki_character_add_character_connection:
-#    pattern: /add/{characterId}/connection
-#    defaults: {_controller: LokiCharacterBundle:Connection:editConnectionForCharacter}
-#    requirements:
-#        characterId: \d+
 
 loki_character_delete_character_connection:
     pattern: /delete/{characterId}/connection/{inDB}/{connectionId}
@@ -86,13 +80,13 @@ loki_character_edit_character_connection:
 
 loki_character_add_character_item:
     pattern: /add/{characterId}/item
-    defaults: {_controller: LokiCharacterBundle:BackEnd:addItemToCharacter, characterId: 0}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:EditItemforCharacter, characterId: 0 , itemId: 0}
     requirements:
         characterId: \d+
 
 loki_character_edit_character_item:
     pattern: /edit/{characterId}/item/{itemId}
-    defaults: {_controller: LokiCharacterBundle:BackEnd:addItemToCharacter, characterId: 0, itemId: 0}
+    defaults: {_controller: LokiCharacterBundle:BackEnd:EditItemforCharacter, characterId: 0, itemId: 0}
     requirements:
         characterId: \d+
         itemId: \d+

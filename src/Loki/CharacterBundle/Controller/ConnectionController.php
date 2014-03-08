@@ -28,18 +28,22 @@ class ConnectionController extends Controller{
             $connectionRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:ConnectionInDB");
             $connection = is_null($connectionRepo->findOneById($connectionId))?new ConnectionInDB():$connectionRepo->findOneById($connectionId);
             $form = $this->createForm(new ConnectionInDBType(), $connection);
-            return $this->editConnection($connection, $form, true, $connectionRepo, $characterId);
-        }elseif($inDB == 0){
-            $connectionRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:ConnectionNotInDB");
-            $connection = is_null($connectionId)?new ConnectionNotInDB():$connectionRepo->findOneById($connectionId);
-            $form = $this->createForm(new ConnectionNotInDBType(), $connection);
-            return $this->editConnection($connection, $form, false, $connectionRepo, $characterId);
-
+            $inDB = true;
         }else{
-            return $this->redirect(
-                $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
-            );
+            $inDB = false;
+            $connectionRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:ConnectionNotInDB");
+            $connection = is_null($connectionRepo->findOneById($connectionId))?new ConnectionNotInDB():$connectionRepo->findOneById($connectionId);
+            $form = $this->createForm(new ConnectionNotInDBType(), $connection);
         }
+
+            return $this->editConnection($connection, $form, $inDB, $connectionRepo, $characterId);
+
+
+//    else{
+//            return $this->redirect(
+//                $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
+//            );
+//        }
     }
 
     /**
@@ -69,14 +73,16 @@ class ConnectionController extends Controller{
         $char = $charRepo->findOneById($characterId);
         $user = $this->getUser();
         $userService = $this->get('loki_character.user');
-        if(!$userService->isAllowedToEdit($user,$char))
+        $connection = $connectionRepo->findOneById($connectionId);
+        if($userService->isAllowedToEdit($user,$char, $connection))
         {
-            $charRepo->delete($connectionRepo->findOneById($connectionId));
+            $charRepo->delete($connection);
+
             $this->get('session')
                 ->getFlashBag()
-                ->add('success', 'Eintrag gelöscht.');
+                ->add('success', 'Connection '.$connection->getName().' wurde gelöscht.');
         }else{
-            $charRepo->delete($connectionRepo->findOneById($connectionId));
+
             $this->get('session')
                 ->getFlashBag()
                 ->add('error', 'Uups, Etwas lief falsch, du hättest dort nicht sein sollen.');
@@ -104,11 +110,11 @@ class ConnectionController extends Controller{
             $form->submit($request);
             if($form->isValid())
             {
-                $connection->setOwner($char);
+                $connection->setCharacter($char);
                 $connectionRepository->persist($connection);
                 $this->get('session')
                     ->getFlashBag()
-                    ->add('success', 'Eintrag gespeichert.');
+                    ->add('success', 'Connection '.$connection->getName().' wurde gespeichert.');
                 return $this->redirect(
                     $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
                 );

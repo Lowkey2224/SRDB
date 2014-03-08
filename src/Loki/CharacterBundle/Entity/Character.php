@@ -95,13 +95,13 @@ class Character extends AbstractEntity
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\ConnectionNotInDB", mappedBy="owner", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\ConnectionNotInDB", mappedBy="character", fetch="EAGER")
      */
     protected $connectionsNotInDB;
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\ConnectionInDB", mappedBy="owner", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\ConnectionInDB", mappedBy="character", fetch="EAGER")
      */
     protected $connectionsInDB;
 

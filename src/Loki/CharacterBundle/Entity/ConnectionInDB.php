@@ -33,12 +33,21 @@ class ConnectionInDB extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Character", inversedBy="connectionsInDB")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    protected $owner;
+    protected $character;
     /**
      * integer @var
      * @ORM\Column(type="integer")
      */
     protected $level;
+
+    /**
+     * Gibt den Namen der Connection zurück!
+     * @return String
+     */
+    public function getName()
+    {
+        return $this->target->getName();
+    }
 
     /**
      * @param mixed $level
@@ -59,17 +68,17 @@ class ConnectionInDB extends AbstractEntity
     /**
      * @param mixed $owner
      */
-    public function setOwner($owner)
+    public function setCharacter($owner)
     {
-        $this->owner = $owner;
+        $this->character = $owner;
     }
 
     /**
      * @return mixed
      */
-    public function getOwner()
+    public function getCharacter()
     {
-        return $this->owner;
+        return $this->character;
     }
 
 

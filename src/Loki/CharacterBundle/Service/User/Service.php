@@ -23,14 +23,19 @@ class Service {
         return $this->securityContext->isGranted('ROLE_USER');
     }
 
-    public function isAllowedToEdit($user, $character)
+    public function isAllowedToEdit($user, $character, $childEntity = null)
     {
 //        if($this->securityContext->isGranted('ROLE_ADMIN'))
 //            return true;
         if (!($character instanceof Character))
             return false;
-        else if (is_null($character->getUser()) || $character->getUser() == $user)
+        if (is_null($character->getUser()) || $character->getUser() == $user)
             return true;
+        if(!is_null($childEntity) && ($childEntity->getCharacter() == $character))
+        {
+            return true;
+        }
+        return false;
     }
 
 
