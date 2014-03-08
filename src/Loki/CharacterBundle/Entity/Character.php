@@ -95,7 +95,7 @@ class Character extends AbstractEntity
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\ConnectionNotInDB", mappedBy="character", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\ConnectionNotInDB", mappedBy="owner", fetch="EAGER")
      */
     protected $connectionsNotInDB;
 
@@ -105,6 +105,12 @@ class Character extends AbstractEntity
      */
     protected $connectionsInDB;
 
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\ConnectionInDB", mappedBy="target", fetch="LAZY")
+     */
+    protected $connectionsInDBTarget;
+
 
 
     public function __construct()
@@ -113,6 +119,7 @@ class Character extends AbstractEntity
         $this->items = new ArrayCollection();
         $this->connectionsNotInDB = new ArrayCollection();
         $this->connectionsInDB = new ArrayCollection();
+        $this->connectionsInDBTarget = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->attributes = new ArrayCollection();
         $this->reputation = 0;

@@ -137,11 +137,11 @@ Loki\CharacterBundle\Entity\CharacterToSkill:
 Loki\CharacterBundle\Entity\ConnectionNotInDB:
 
     connLodur{1..5}:
-        name: <en_US:name()>
+        target: <en_US:name()>
         level: <numberBetween(1,2)>
-        character: @Lodur
+        owner: @Lodur
 
     connNigel{1..5}:
-        name: <en_US:name()>
+        target: <en_US:name()>
         level: <numberBetween(1,2)>
-        character: @Nigel
+        owner: @Nigel

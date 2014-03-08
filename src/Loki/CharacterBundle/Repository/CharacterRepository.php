@@ -14,5 +14,20 @@ use Doctrine\ORM\EntityRepository;
 class CharacterRepository extends MyBaseRepository{
 
 
+    /**
+     * @param string $orderCrit
+     * @param string $orderType
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function createQueryForFindAll(
+        $orderCrit = 'id',
+        $orderType = 'ASC'
+    ) {
+        $qb = $this->createQueryBuilder('character')
+            ->select('character');
+        $qb->orderBy('character.' . $orderCrit, $orderType);
+
+        return $qb;
+    }
 
 } 

@@ -95,75 +95,7 @@ class BackEndController extends Controller{
         ));
     }
 
-    /**
-     * @Route("/add/{characterId}/connection/{connectionId}")
-     * @Template()
-     */
-    public function editConnectionForCharacterAction($characterId, $connectionId = null)
-    {
-        $charRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character");
-        $connectionRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:ConnectionNotInDB");
-        $user = $this->getUser();
-        $warmedUp = $this->warmup($characterId, $charRepo, $connectionId, $connectionRepo, $user);
-        //Wenn response true ist ist alles gut.
-        if($warmedUp !== true)
-        {
-            return $warmedUp;
-        }
-        $connection = is_null($connectionId)?new ConnectionNotInDB():$connectionRepo->findOneById($connectionId);
-        $form = $this->createForm(new ConnectionNotInDBType(), $connection);
-        $request = $this->getRequest();
-        $char = $charRepo->findOneById($characterId);
-        //Button wurde geklickt.
-        if($request->getMethod()=="POST")
-        {
-            $form->submit($request);
-            if($form->isValid())
-            {
 
-                $connection->setCharacter($char);
-                $connectionRepo->persist($connection);
-                $this->get('session')
-                    ->getFlashBag()
-                    ->add('success', 'Eintrag gespeichert.');
-                return $this->redirect(
-                    $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
-                );
-            }
-        }
-
-        return array(
-            'form' => $form->createView(),
-            'character' => $char,
-            'connection' => $connection,
-        );
-    }
-
-    /**
-     * @Route("/delete/{characterId}/connection/{connectionId}")
-     * @Template()
-     */
-    public function deleteConnectionForCharacterAction($characterId, $connectionId)
-    {
-        $charRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character");
-        $connectionRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:ConnectionNotInDB");
-        $user = $this->getUser();
-        $warmedUp = $this->warmup($characterId, $charRepo, $connectionId, $connectionRepo, $user);
-        //Wenn response true ist ist alles gut.
-        if($warmedUp !== true)
-        {
-            return $warmedUp;
-        }
-
-        $charRepo->delete($connectionRepo->findOneById($connectionId));
-        $this->get('session')
-            ->getFlashBag()
-            ->add('success', 'Eintrag gelöscht.');
-        return $this->redirect(
-            $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
-        );
-
-    }
 
     /**
      * Action for adding new Characters
@@ -366,16 +298,7 @@ class BackEndController extends Controller{
 
     }
 
-    /**
-     * @param $form
-     * @param $char
-     * @param $repo
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    private function handleForm($form, $char, $repo)
-    {
 
-    }
 
     private function addAttributesToCharacter($character, $characterToAttributeRepository, $attrRepo)
     {

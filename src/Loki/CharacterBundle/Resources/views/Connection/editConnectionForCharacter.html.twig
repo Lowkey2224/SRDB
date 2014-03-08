@@ -1,0 +1,37 @@
+{% extends "LokiCharacterBundle::front.html.twig" %}
+{% block content %}
+    <div>
+        Connection {% if connection.target  is not null %}
+            {% if inDB == true %}
+                {{ connection.target.name }}
+            {% else %}
+                {{ connection.target }}
+            {% endif %}
+        {% endif %} von {{ character.name }} bearbeiten.
+    </div>
+    {% block form %}
+        <div class="form-horizontal">
+            {{ form_start(form) }}
+            {% for flashMessage in app.session.getFlashBag.get('form-error') %}
+                <div class="alert alert-error">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+
+
+            {{ form_row (form.target) }}
+            {% if inDB == true %}
+                Connection nicht in der Datenbank? <a href="{{ path("loki_character_edit_character") }}">Leg ihn
+                an</a></br>
+                Oder trage <a
+                    href="{{ path("loki_character_edit_character_connection", {'characterId': character.id, 'inDB':0,}) }}">hier</a> einen Character einfach nur mit Namen ein.</br>
+            {% endif %}
+            {{ form_row (form.level) }}
+            {{ form_row(form.submit) }}
+
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+
+    {% endblock %}
+{% endblock %}

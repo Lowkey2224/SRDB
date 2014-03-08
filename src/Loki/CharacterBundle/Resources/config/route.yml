@@ -63,25 +63,26 @@ loki_character_add_skill_to_character:
     requirements:
         characterId: \d+
 
-loki_character_add_character_connection:
-    pattern: /add/{characterId}/connection
-    defaults: {_controller: LokiCharacterBundle:BackEnd:editConnectionForCharacter, characterId:0}
-    requirements:
-        characterId: \d+
+#loki_character_add_character_connection:
+#    pattern: /add/{characterId}/connection
+#    defaults: {_controller: LokiCharacterBundle:Connection:editConnectionForCharacter}
+#    requirements:
+#        characterId: \d+
 
 loki_character_delete_character_connection:
-    pattern: /delete/{characterId}/connection/{connectionId}
-    defaults: {_controller: LokiCharacterBundle:BackEnd:deleteConnectionForCharacter, characterId:0, connectionId: 0}
+    pattern: /delete/{characterId}/connection/{inDB}/{connectionId}
+    defaults: {_controller: LokiCharacterBundle:Connection:deleteConnectionForCharacter}
     requirements:
         characterId: \d+
         connectionId: \d+
 
 loki_character_edit_character_connection:
-    pattern: /edit/{characterId}/connection/{connectionId}
-    defaults: {_controller: LokiCharacterBundle:BackEnd:editConnectionForCharacter, characterId:0, connectionId: 0}
+    pattern: /edit/{characterId}/connection/{inDB}/{connectionId}
+    defaults: {_controller: LokiCharacterBundle:Connection:editConnectionForCharacter, connectionId: 0, inDB: 1}
     requirements:
         characterId: \d+
         connectionId: \d+
+        inDB: \d
 
 loki_character_add_character_item:
     pattern: /add/{characterId}/item

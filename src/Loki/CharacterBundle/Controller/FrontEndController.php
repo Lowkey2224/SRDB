@@ -94,7 +94,7 @@ class FrontEndController extends Controller
                 "attributes" => $char->getAttributes(),
                 "skills" => $char->getSkills(),
                 "equip" => $char->getItems(),
-                "connections" => array(),
+                "connections" => $char->getConnectionsInDB(),
                 "connectionsNotInDB" => $char->getConnectionsNotInDB(),
                 "spells" => array(),
                 "kipowers" => array(),

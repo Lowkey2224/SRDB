@@ -143,8 +143,9 @@
                 <thead>
                 <tr>
                     <th>Connections</th>
-                    <th>{% if editable == true %}
-                            <a href="{{ path("loki_character_add_character_connection", {'characterId' : char.id}) }}"><i
+                    <th>
+                        {% if editable == true %}
+                            <a href="{{ path("loki_character_edit_character_connection", {'characterId' : char.id}) }}"><i
                                         class="glyphicon glyphicon-plus"></i> </a>
                         {% endif %}
                     </th>
@@ -153,11 +154,11 @@
                 <tbody>
                 {% for connEntry in connections %}
                     <tr>
-                        <td>{{ connEntry.name }}: {{ connEntry.level }} </td>
+                        <td>{{ connEntry.target.name }}: {{ connEntry.level }} </td>
                         <td>{% if editable == true %}<a
-                                href="{{ path("loki_character_edit_character_connection", {"characterId" : char.id, "connectionId" : connEntry.id}) }}">
+                                href="{{ path("loki_character_edit_character_connection", {"characterId" : char.id, "connectionId" : connEntry.id, 'inDB':1}) }}">
                                     <i class="glyphicon glyphicon-pencil"></i></a>
-                                <a href="{{ path("loki_character_delete_character_connection", {"characterId" : char.id, "connectionId" : connEntry.id}) }}"><i
+                                <a href="{{ path("loki_character_delete_character_connection", {"characterId" : char.id, "connectionId" : connEntry.id, 'inDB':1}) }}"><i
                                             class="glyphicon glyphicon-remove"></i></a>
                             {% endif %}
                         </td>
@@ -165,11 +166,11 @@
                 {% endfor %}
                 {% for connEntry in connectionsNotInDB %}
                     <tr>
-                        <td>{{ connEntry.name }}: {{ connEntry.level }} </td>
+                        <td>{{ connEntry.target }}: {{ connEntry.level }} </td>
                         <td>{% if editable == true %}<a
-                                href="{{ path("loki_character_edit_character_connection", {'characterId' : char.id, 'connectionId' : connEntry.id}) }}">
+                                href="{{ path("loki_character_edit_character_connection", {'characterId' : char.id, 'connectionId' : connEntry.id, 'inDB':0}) }}">
                                     <i class="glyphicon glyphicon-pencil"></i></a>
-                                <a href="{{ path("loki_character_delete_character_connection", {'characterId' : char.id, 'connectionId' : connEntry.id}) }}"><i
+                                <a href="{{ path("loki_character_delete_character_connection", {'characterId' : char.id, 'connectionId' : connEntry.id, 'inDB':0}) }}"><i
                                             class="glyphicon glyphicon-remove"></i></a>
                             {% endif %}
                         </td>

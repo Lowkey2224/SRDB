@@ -10,13 +10,85 @@ namespace Loki\CharacterBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Skill
- *
- * @ORM\Table("`connection_in_db`")
+ * Class ConnectionInDB for Characters that are in the Database
+ * SCs die in der DB sind, haben mehrere Entitaeten hiervon, um Connections zu NSCs herzustellen, die
+ * in der DB als echte Chars angelegt sind
+ * @package Loki\CharacterBundle\Entity
+ * @ORM\Table("`connections_in_db`")
  * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\ConnectionInDBRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class ConnectionInDB extends AbstractEntity
 {
 
-} 
+    /**
+     * Character @var
+     * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Character", inversedBy="connectionsInDBTarget")
+     * @ORM\JoinColumn(name="target_id", referencedColumnName="id")
+     */
+    protected $target;
+
+    /**
+     * Character @var
+     * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Character", inversedBy="connectionsInDB")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
+     */
+    protected $owner;
+    /**
+     * integer @var
+     * @ORM\Column(type="integer")
+     */
+    protected $level;
+
+    /**
+     * @param mixed $level
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+
+
+    /**
+     * @param mixed $target
+     */
+    public function setTarget($target)
+    {
+        $this->target = $target;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTarget()
+    {
+        return $this->target;
+    }
+
+
+}

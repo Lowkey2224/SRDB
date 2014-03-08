@@ -20,40 +20,28 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\ConnectionNotInDBRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class ConnectionNotInDB extends AbstractEntity {
+class ConnectionNotInDB extends AbstractEntity{
 
 
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Character", inversedBy="connectionsNotInDB")
-     * @ORM\JoinColumn(name="character_id", referencedColumnName="id")
-     */
-    protected $character;
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $level;
+
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $name;
+    protected $target;
 
     /**
-     * @param mixed $character
+     * Character @var
+     * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Character", inversedBy="connectionsNotInDB")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    public function setCharacter($character)
-    {
-        $this->character = $character;
-    }
-
+    protected $owner;
     /**
-     * @return mixed
+     * integer @var
+     * @ORM\Column(type="integer")
      */
-    public function getCharacter()
-    {
-        return $this->character;
-    }
+    protected $level;
 
     /**
      * @param mixed $level
@@ -72,19 +60,37 @@ class ConnectionNotInDB extends AbstractEntity {
     }
 
     /**
-     * @param mixed $name
+     * @param mixed $owner
      */
-    public function setName($name)
+    public function setOwner($owner)
     {
-        $this->name = $name;
+        $this->owner = $owner;
     }
 
     /**
      * @return mixed
      */
-    public function getName()
+    public function getOwner()
     {
-        return $this->name;
+        return $this->owner;
+    }
+
+
+
+    /**
+     * @param mixed $name
+     */
+    public function setTarget($name)
+    {
+        $this->target = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTarget()
+    {
+        return $this->target;
     }
 
 

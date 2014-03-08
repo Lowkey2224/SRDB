@@ -160,4 +160,8 @@
         <echo message="Fixtures loaded"/>
     </target>
 
+    <target name="build" description="Builds Database, laods Fixtures, and installs Assets" depends="rebuild-database, assets">
+        <echo message="Database built, fixtures loaded, assets installed"/>
+    </target>
+
 </project>

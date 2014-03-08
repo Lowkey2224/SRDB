@@ -1,42 +1,46 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: marcus
- * Date: 19.02.14
- * Time: 12:39
+ * Created by Marcus "Loki" Jenz 
+ * Date: 08.03.14
+ * Time: 11:49
  */
 
 namespace Loki\CharacterBundle\Form;
 
 
+use Loki\CharacterBundle\Repository\CharacterRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class ConnectionNotInDBType extends AbstractType{
-
+class ConnectionInDBType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->setDataLocked(false);
         $builder->add(
-            "target",
-            "text",
+            "level",
+            "number",
             array(
-                "label" => "Name:",
+                "label" => "Stufe:",
+                "precision" => 0,
                 "required" => true,
                 "constraints" => array(new NotBlank()),
 
             )
         )
             ->add(
-                "level",
-                "number",
+                'target',
+                'entity',
                 array(
-                    "label" => "Stufe:",
-                    "precision" => 0,
-                    "required" => true,
-                    "constraints" => array(new NotBlank()),
-
+                    'label' => 'Connection:',
+                    'required' => true,
+                    'class' => 'LokiCharacterBundle:Character',
+                    'property' => 'name',
+                    'empty_value' => 'Bitte Connection auswählen',
+                    'query_builder' => function (CharacterRepository $er) {
+                            return $er->createQueryForFindAll();
+                        },
                 )
             )
             ->add('submit', 'submit', array(
@@ -54,15 +58,15 @@ class ConnectionNotInDBType extends AbstractType{
      */
     public function getName()
     {
-        return "loki_characterbundle_connectionNotInDB";
+        return "loki_characterbundle_connectionInDB";
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Loki\CharacterBundle\Entity\ConnectionNotInDB',
+                'data_class' => 'Loki\CharacterBundle\Entity\ConnectionInDB',
             )
         );
     }
-}
+} 
