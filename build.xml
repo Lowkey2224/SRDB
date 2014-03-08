@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Symfony2 project" default="hello">
+
+    <target name="hello">
+        <echo message="No Default Target set."/>
+    </target>
+
+    <!-- Target that install the symfony2 app -->
+    <target name="install" depends="vendors">
+        <echo message="Installed Symfony2 project in ${basedir}"/>
+    </target>
+
+    <!-- Target that deploys a installed symfony2 app -->
+    <target name="deploy" depends="warmup-cache, doctrine-schema, doctrine-cache, permissions">
+        <echo message="Deployed Symfony2 project in ${basedir}"/>
+    </target>
+
+    <!-- Rebuilds the database with fixtures -->
+    <target name="rebuild-database" depends="warmup-cache, database-clear, doctrine-schema, doctrine-cache, database-fixtures-load">
+        <echo message="Database rebuilded and fixtures loaded"/>
+    </target>
+
+    <target name="make-app-dev-public" description="Remove the ip check from app_dev.php">
+        <echo message="Remove the ip check from app_dev.php"/>
+        <exec executable="sed" failonerror="true">
+            <arg line="-i 's/header(/\/\/header(/i' web/app_dev.php"/>
+        </exec>
+        <exec executable="sed" failonerror="true">
+            <arg line="-i 's/exit(/\/\/exit(/i' web/app_dev.php"/>
+        </exec>
+    </target>
+
+    <!-- Set folder permissions -->
+    <target name="permissions">
+        <echo message="Set Cache folder permissions"/>
+        <chmod file="${basedir}/app/cache/**" perm="777" type="both"/>
+        <echo message="Set Logs folder permissions"/>
+        <chmod file="${basedir}/app/logs/**" perm="777" type="both"/>
+        <echo message="Set Upload folder permissions"/>
+        <chmod file="${basedir}/web/uploads/**" perm="777" type="both"/>
+    </target>
+
+    <!-- Checks that parameters.ini File exists -->
+    <target name="check-parameters" description="Checks if parameters.ini exists">
+        <echo message="Check if Config file app/config/parameters.yml exists"/>
+        <available file="${basedir}/app/config/parameters.yml" property="parameters.exist"/>
+        <fail unless="parameters.exist"
+              message="Create a 'app/config/parameters.yml' file for your system from the template 'app/config/parameters.yml.dist'"/>
+    </target>
+
+    <!-- Updates symfony2 vendors -->
+    <target name="vendors-update" description="Updating Symfony2 vendors">
+        <exec executable="php" failonerror="true">
+            <arg line="composer.phar update"/>
+        </exec>
+    </target>
+
+    <target name="vendors" description="Installing Symfony2 vendors">
+        <exec executable="php" failonerror="true">
+            <arg line="composer.phar install --prefer-dist"/>
+        </exec>
+    </target>
+
+    <target name="vendors-dev" description="Installing Symfony2 vendors (dev)">
+        <exec executable="php" failonerror="true">
+            <arg line="composer.phar install --prefer-dist --dev"/>
+        </exec>
+    </target>
+
+    <!-- Updates doctrine schema -->
+    <target name="doctrine-schema" description="Update doctrine schema">
+        <exec executable="php" failonerror="true">
+            <arg line="${basedir}/app/console doctrine:schema:update --force"/>
+        </exec>
+    </target>
+
+    <!-- Clear doctrine caches -->
+    <target name="doctrine-cache" description="Clear doctrine caches">
+        <exec executable="php">
+            <arg line="${basedir}/app/console doctrine:cache:clear-metadata"/>
+        </exec>
+        <exec executable="php">
+            <arg line="${basedir}/app/console doctrine:cache:clear-query"/>
+        </exec>
+        <exec executable="php">
+            <arg line="${basedir}/app/console doctrine:cache:clear-result"/>
+        </exec>
+    </target>
+
+    <!-- Deletes cache -->
+    <target name="clear-cache" description="Cleanup cache">
+        <delete includeEmptyDirs="true" failonerror="false">
+            <fileset dir="app/cache/dev"/>
+        </delete>
+        <delete includeEmptyDirs="true" failonerror="false">
+            <fileset dir="app/cache/prod"/>
+        </delete>
+        <echo message="Symfony cache cleared"/>
+    </target>
+
+    <target name="clear-cache_OLD" description="Cleanup cache">
+        <exec executable="php">
+            <arg line="${basedir}/app/console cache:clear --env=dev --no-warmup"/>
+        </exec>
+        <exec executable="php">
+            <arg line="${basedir}/app/console cache:clear --env=prod --no-warmup"/>
+        </exec>
+        <exec executable="php">
+            <arg line="${basedir}/app/console cache:clear --env=test --no-warmup"/>
+        </exec>
+        <echo message="Symfony cache cleared"/>
+    </target>
+
+    <target name="clean" depends="clear-cache_OLD">
+        <echo file="./app/logs/dev.log"/> 
+        <echo file="./app/logs/prod.log"/> 
+        <echo file="./app/logs/test.log"/> 
+    </target>
+
+    <!-- Warmes up cache -->
+    <target name="warmup-cache" description="Cleanup cache">
+        <exec executable="php">
+            <arg line="${basedir}/app/console cache:clear --env=dev"/>
+        </exec>
+        <exec executable="php">
+            <arg line="${basedir}/app/console cache:clear --env=prod"/>
+        </exec>
+        <echo message="Symfony cache warmed up"/>
+    </target>
+
+    <!-- Dumps assets -->
+    <target name="assetic" description="Dumping assets">
+        <exec executable="${basedir}/app/console" failonerror="true">
+            <arg value="--env=prod"/>
+            <arg value="assetic:dump"/>
+        </exec>
+    </target>
+
+    <!-- installs assets -->
+    <target name="assets" description="Installing assets">
+        <exec executable="${basedir}/app/console" failonerror="true">
+            <arg value="assets:install"/>
+            <arg value="--symlink"/>
+            <arg value="${basedir}/web"/>
+        </exec>
+    </target>
+
+    <!-- Clears the database -->
+    <target name="database-clear" description="Clears database">
+        <exec executable="php" failonerror="true">
+            <arg line="${basedir}/app/console doctrine:schema:drop --force"/>
+        </exec>
+        <echo message="Cleared database"/>
+    </target>
+
+    <target name="database-fixtures-load" description="Load database fixtures">
+        <exec executable="php" failonerror="true">
+            <arg line="${basedir}/app/console doctrine:fixtures:load --no-interaction"/>
+        </exec>
+        <echo message="Fixtures loaded"/>
+    </target>
+
+</project>

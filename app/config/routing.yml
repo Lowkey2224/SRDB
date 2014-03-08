@@ -1,0 +1,21 @@
+_user_bundle:
+    resource: "@LokiUserBundle/Resources/config/routing.yml"
+
+
+loki_character:
+    resource: "@LokiCharacterBundle/Resources/config/route.yml"
+    prefix: /
+
+#_default_show:
+#    resource: "@LokiCharacterBundle/Controller/FrontEndController.php"
+#    type:     annotation
+#    prefix:   /
+
+
+#edit_character:
+#    resource: "@LokiCharacterBundle/Controller/DefaultController
+#    type:     annotation
+#    prefix:   /edit
+
+    #resource: "@LokiCharacterBundle/Resources/config/route.yml"
+    #prefix:   /

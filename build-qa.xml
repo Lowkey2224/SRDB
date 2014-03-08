@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="PHP-Project" default="build" basedir=".">
+
+    <property name="reports.dir" value="${basedir}/reports"/>
+
+    <property name="config.dir" value="${basedir}/buildconfig"/>
+    <property name="source.dir" value="${basedir}/src"/>
+
+
+    <property name="config.file.phpcs" value="${config.dir}/phpcs.xml"/>
+    <property name="config.file.phpmd" value="${config.dir}/phpmd.xml"/>
+
+
+    <property name="logs.dir" value="${reports.dir}/logs"/>
+
+    <property name="report.phploc.log.file" value="${logs.dir}/phploc.csv"/>
+    <property name="report.pdepend.log.file" value="${logs.dir}/jdepend.xml"/>
+    <property name="report.phpmd.log.file" value="${logs.dir}/pmd.xml"/>
+    <property name="report.phpcs.log.file" value="${logs.dir}/checkstyle.xml"/>
+    <property name="report.phpcpd.log.file" value="${logs.dir}/pmd-cpd.xml"/>
+    <property name="report.phpunit.log.file" value="${logs.dir}/junit.xml"/>
+
+    <property name="phpunit.coverage.dir"
+              value="${reports.dir}/coverage"/>
+
+    <property name="code-browser.output.dir"
+              value="${reports.dir}/code-browser"/>
+
+    <property name="report.pdepend.chart.file"
+              value="${reports.dir}/pdepend/dependencies.svg"/>
+    <property name="report.pdepend.pyramid.file"
+              value="${reports.dir}/pdepend/overview-pyramid.svg"/>
+
+
+    <target name="build"
+            depends="clean,install-dependencies,lint,phploc,pdepend,phpmd,phpcs,phpcpd,phpcb,doctrine-schema,doctrine-cache,phpunit"/>
+
+    <target name="clean"
+            description="Cleanup build artifacts">
+        <delete dir="${reports.dir}"/>
+    </target>
+
+    <target name="install-dependencies">
+        <exec executable="php" failonerror="true">
+            <arg line="composer.phar install --dev"/>
+        </exec>
+    </target>
+
+    <target name="lint"
+            description="PHP Syntax check">
+        <apply executable="php" failonerror="true">
+
+            <arg value="-l"/>
+
+            <!-- (Own) Bundles -->
+            <fileset dir="${source.dir}">
+                <include name="**/*.php"/>
+                <include name="**/*.phtml"/>
+                <modified/>
+            </fileset>
+
+            <!-- Public accessable files -->
+            <fileset dir="${basedir}/web">
+                <include name="**/*.php"/>
+                <include name="**/*.phtml"/>
+                <modified/>
+            </fileset>
+
+        </apply>
+    </target>
+
+    <target name="phploc"
+            description="Measure project size using PHPLOC">
+
+        <dirname property="directoryProperty" file="${report.phploc.log.file}"/>
+        <mkdir dir="${directoryProperty}"/>
+
+        <exec executable="phploc">
+            <arg value="--log-csv"/>
+            <arg value="${report.phploc.log.file}"/>
+            <!-- Just count lines of code of our bundles -->
+            <arg path="${source.dir}"/>
+        </exec>
+    </target>
+
+    <target name="pdepend"
+            description="Calculate software metrics using PHP_Depend">
+
+        <dirname property="directoryProperty1"
+                 file="${report.pdepend.log.file}"/>
+        <mkdir dir="${directoryProperty1}"/>
+        <dirname property="directoryProperty2"
+                 file="${report.pdepend.chart.file}"/>
+        <mkdir dir="${directoryProperty2}"/>
+        <dirname property="directoryProperty3"
+                 file="${report.pdepend.pyramid.file}"/>
+        <mkdir dir="${directoryProperty3}"/>
+
+        <exec executable="pdepend">
+            <arg value="--jdepend-xml=${report.pdepend.log.file}"/>
+            <arg value="--jdepend-chart=${report.pdepend.chart.file}"/>
+            <arg value="--overview-pyramid=${report.pdepend.pyramid.file}"/>
+            <!-- Just check our bundles -->
+            <arg path="${source.dir}"/>
+        </exec>
+    </target>
+
+    <target name="phpmd"
+            description="Perform project mess detection using PHPMD">
+        <dirname property="directoryProperty" file="${report.phpmd.log.file}"/>
+        <mkdir dir="${directoryProperty}"/>
+        <exec executable="phpmd">
+            <!-- Just check our bundles -->
+            <arg path="${source.dir}"/>
+            <arg value="xml"/>
+            <arg value="${config.file.phpmd}"/>
+            <arg value="--reportfile"/>
+            <arg value="${report.phpmd.log.file}"/>
+        </exec>
+    </target>
+
+    <target name="phpcs"
+            description="Find coding standard violations using PHP_CodeSniffer">
+        <dirname property="directoryProperty" file="${report.phpcs.log.file}"/>
+        <mkdir dir="${directoryProperty}"/>
+        <exec executable="phpcs">
+            <arg value="--report=checkstyle"/>
+            <arg value="--report-file=${report.phpcs.log.file}"/>
+            <arg value="--standard=${config.file.phpcs}"/>
+            <arg value="--ignore=DataFixtures"/>
+            <arg value="--extensions=php,phtml"/>
+            <!-- Just sniff bundles -->
+            <arg path="${source.dir}"/>
+        </exec>
+    </target>
+
+    <target name="phpcpd"
+            description="Find duplicate code using PHPCPD">
+        <dirname property="directoryProperty" file="${report.phpcpd.log.file}"/>
+        <mkdir dir="${directoryProperty}"/>
+        <exec executable="phpcpd">
+            <arg value="--log-pmd"/>
+            <arg value="${report.phpcpd.log.file}"/>
+            <arg value="--progress"/>
+            <arg value="--exclude"/>
+            <arg value="Entity"/>
+            <!-- Just check our bundles -->
+            <arg path="${source.dir}"/>
+        </exec>
+    </target>
+
+    <target name="phpunit-with-coverage"
+            description="Run unit tests with PHPUnit"
+            depends="install-dependencies">
+        <mkdir dir="${phpunit.coverage.dir}"/>
+        <exec executable="vendor/bin/phpunit" failonerror="true">
+            <arg line="-v --debug -c ${basedir}/app/phpunit.xml.dist
+             --coverage-html '${phpunit.coverage.dir}'
+             --coverage-clover '${phpunit.coverage.dir}/coverage.xml'"/>
+        </exec>
+    </target>
+
+    <target name="phpunit"
+            description="Run unit tests with PHPUnit"
+            depends="install-dependencies">
+        <mkdir dir="${phpunit.coverage.dir}"/>
+        <exec executable="phpunit" failonerror="true">
+            <arg line="-v --debug -c ${basedir}/app/phpunit.xml.dist
+             --log-junit '${report.phpunit.log.file}'"/>
+        </exec>
+    </target>
+
+    <target name="phpcb"
+            description="Aggregate tool output with PHP_CodeBrowser">
+        <mkdir dir="${code-browser.output.dir}"/>
+        <exec executable="phpcb">
+            <arg value="--log"/>
+            <arg path="${logs.dir}"/>
+            <arg value="--source"/>
+            <!-- Just browse code of our bundles -->
+            <arg path="${source.dir}"/>
+            <arg value="--output"/>
+            <arg path="${code-browser.output.dir}"/>
+        </exec>
+    </target>
+
+    <!-- Updates doctrine schema -->
+    <target name="doctrine-schema" description="Update doctrine schema">
+        <exec executable="php" failonerror="true">
+            <arg line="${basedir}/app/console doctrine:schema:drop --force"/>
+        </exec>
+        <exec executable="php" failonerror="true">
+            <arg line="${basedir}/app/console doctrine:schema:create"/>
+        </exec>
+        <exec executable="php" failonerror="true">
+            <arg line="${basedir}/app/console doctrine:fixtures:load --append"/>
+        </exec>
+    </target>
+
+    <!-- Clear doctrine caches -->
+    <target name="doctrine-cache" description="Clear doctrine caches">
+        <exec executable="php">
+            <arg line="${basedir}/app/console doctrine:cache:clear-metadata"/>
+        </exec>
+        <exec executable="php">
+            <arg line="${basedir}/app/console doctrine:cache:clear-query"/>
+        </exec>
+        <exec executable="php">
+            <arg line="${basedir}/app/console doctrine:cache:clear-result"/>
+        </exec>
+    </target>
+
+    <target name="codeception-execeution"
+            description="Run Codeception tests"
+            depends="phpunit">
+        <exec executable="php" failonerror="true">
+            <arg line="bin/codecept run --xml"/>
+        </exec>
+        <echo message="Codeception executed"/>
+    </target>
+</project>
