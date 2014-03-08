@@ -88,7 +88,7 @@ class BackEndController extends Controller
             }
 
         } else {
-            $errorHandler = $this->get('hallo_errorhandler');
+            $errorHandler = $this->get('loki_character.errorHandler');
             $errorArray = $errorHandler->getErrorMessages($form);
             foreach ($errorArray as $error) {
                 $this->get('session')->getFlashBag()->add('form-error', $error);

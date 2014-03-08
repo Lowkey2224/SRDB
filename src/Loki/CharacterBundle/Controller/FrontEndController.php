@@ -18,8 +18,6 @@ class FrontEndController extends Controller
     {
         $charRepo =$this->getDoctrine()->getRepository('LokiCharacterBundle:Character');
         $chars = $charRepo->findAll();
-        $this->get('loki_character.attribute');
-//        $str = $this->get('loki_character.character')->foo();
         return array("characters" => $chars);
     }
 
