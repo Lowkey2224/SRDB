@@ -32,9 +32,4 @@ class Specialization extends AbstractEntity{
      */
     protected $name;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $level;
-
 } 
