@@ -2,188 +2,32 @@
 {% block content %}
     <div class="row">
         <div class="col-md-4">
-            {#{{ include("LokiCharacterBundle:FrondEnd:showCharacter.html.twig",#}
-            {#{ 'char': char,#}
-            {#'username': username}#}
-            {#) }}#}
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>{{ char.name }}</th>
-                    <th>{% if editable == true %}
-                        <a href="{{ path("loki_character_edit_character",{"characterId": char.id}) }}"><i
-                                        class="glyphicon glyphicon-pencil"></i></a>{% endif %}
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>User: {{ username }}</td>
-                </tr>
-                <tr>
-                    <td>{% if char.type == 2 %}N{% endif %}SC</td>
-                </tr>
-                <tr>
-                    <td>Rasse: {{ char.race }}</td>
-                </tr>
-                <tr>
-                    <td>Reputation: {{ char.reputation }}</td>
-                </tr>
-                <tr>
-                    <td>Karmapool: {{ char.karmapool }}</td>
-                </tr>
-                <tr>
-                    <td>Gutes Karma: {{ char.goodKarma }}</td>
-                </tr>
-                <tr>
-                    <td>Proffession: {{ char.occupation }}</td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="tooltipSpan"
-                              data-content="{{ char.description }}">
-                            Beschreibung:
-                            {{ char.description[:50] }}
-                            {% if char.description|length > 51 %}
-                                ...
-                            {% endif %}
-                            </span></td>
-                </tr>
-                </tbody>
-            </table>
+            {{ render(controller('LokiCharacterBundle:FrontEnd:showChar', {
+            'character': char
+            })) }}
         </div>
         <div class="col-md-4">
-            {#<h2>Attribute:</h2>#}
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Attribute</th>
-                    <th></th>
-                    <th>
-                        {% if showAll == false %}
-                        <a href="{{ path('loki_character_show_character', {'characterId': char.id, 'showAll' : 1}) }}"><i class="glyphicon glyphicon-resize-full"></i></a>
-                        {% else %}
-                        <a href="{{ path('loki_character_show_character', {'characterId': char.id, 'showAll' : 0}) }}"><i class="glyphicon glyphicon-resize-small"></i></a>
-                        {% endif %}
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for attributEntry in attributes %}
-                    {% if attributEntry.level > 0 or showAll == true %}
-                    <tr>
-                        <td>{{ attributEntry.attribute.name }}: {{ attributEntry.level }}</td>
-                        <td></td>
-                        <td>{% if editable == true %}
-                                <a href="{{ path("loki_character_edit_character_attributes",{"characterId": char.id, "attributeNumber":attributEntry.attribute.id}) }}"><i
-                                            class="glyphicon glyphicon-pencil"></i></a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
+            {{ render(controller('LokiCharacterBundle:FrontEnd:showAttributes', {
+            'character': char,
+            'showAll': showAll
+            })) }}
         </div>
         <div class="col-md-4">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Skills</th>
-                    <th>{% if editable == true %}
-                            <a href="{{ path("loki_character_add_skill_to_character", {'characterId' :char.id}) }}"><i
-                                        class="glyphicon glyphicon-plus"></i> </a>
-                        {% endif %}
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for skillEntry in skills %}
-                    <tr>
-                        <td>{{ skillEntry.skill.name }}: {{ skillEntry.level }} </td>
-                        <td>{% if editable == true %}
-                                <a href="{{ path("loki_character_edit_character_skill", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
-                                            class="glyphicon glyphicon-pencil"></i></a>
-                                <a href="{{ path("loki_character_delete_character_skill", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
-                                            class="glyphicon glyphicon-remove"></i></a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {{ render(controller('LokiCharacterBundle:FrontEnd:showSkills', {
+            'character': char
+            })) }}
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Equipment</th>
-                    <th>
-                        {% if editable == true %}
-                            <a href="{{ path("loki_character_add_character_item", {"characterId" : char.id}) }}"><i
-                                        class="glyphicon glyphicon-plus"></i> </a>
-                        {% endif %}
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for item in equip %}
-                    <tr>
-                        <td>{{ item.name }}: {{ item.quantity }} </td>
-                        <td>{% if editable == true %}
-                                <a href="{{ path("loki_character_edit_character_item", {"characterId" : char.id, "itemId" : item.id}) }}"><i
-                                            class="glyphicon glyphicon-pencil"></i></a>
-                                <a href="{{ path("loki_character_delete_character_item", {"characterId" : char.id, "itemId" : item.id}) }}"><i
-                                            class="glyphicon glyphicon-remove"></i></a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {{ render(controller('LokiCharacterBundle:FrontEnd:showEquip', {
+            'character': char
+            })) }}
         </div>
         <div class="col-md-4">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Connections</th>
-                    <th>
-                        {% if editable == true %}
-                            <a href="{{ path("loki_character_edit_character_connection", {'characterId' : char.id}) }}"><i
-                                        class="glyphicon glyphicon-plus"></i> </a>
-                        {% endif %}
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for connEntry in connections %}
-                    <tr>
-                        <td>{{ connEntry.target.name }}: {{ connEntry.level }} </td>
-                        <td>{% if editable == true %}<a
-                                href="{{ path("loki_character_edit_character_connection", {"characterId" : char.id, "connectionId" : connEntry.id, 'inDB':1}) }}">
-                                    <i class="glyphicon glyphicon-pencil"></i></a>
-                                <a href="{{ path("loki_character_delete_character_connection", {"characterId" : char.id, "connectionId" : connEntry.id, 'inDB':1}) }}"><i
-                                            class="glyphicon glyphicon-remove"></i></a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                {% for connEntry in connectionsNotInDB %}
-                    <tr>
-                        <td>{{ connEntry.target }}: {{ connEntry.level }} </td>
-                        <td>{% if editable == true %}<a
-                                href="{{ path("loki_character_edit_character_connection", {'characterId' : char.id, 'connectionId' : connEntry.id, 'inDB':0}) }}">
-                                    <i class="glyphicon glyphicon-pencil"></i></a>
-                                <a href="{{ path("loki_character_delete_character_connection", {'characterId' : char.id, 'connectionId' : connEntry.id, 'inDB':0}) }}"><i
-                                            class="glyphicon glyphicon-remove"></i></a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {{ render(controller('LokiCharacterBundle:FrontEnd:showConnections', {
+            'character': char
+            })) }}
         </div>
         <div class="col-md-4">
             <table class="table">

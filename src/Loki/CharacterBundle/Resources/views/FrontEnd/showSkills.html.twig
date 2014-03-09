@@ -1,0 +1,26 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Skills</th>
+        <th>{% if editable == true %}
+                <a href="{{ path("loki_character_add_skill_to_character", {'characterId' :char.id}) }}"><i
+                            class="glyphicon glyphicon-plus"></i> </a>
+            {% endif %}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for skillEntry in skills %}
+        <tr>
+            <td>{{ skillEntry.skill.name }}: {{ skillEntry.level }} </td>
+            <td>{% if editable == true %}
+                    <a href="{{ path("loki_character_edit_character_skill", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
+                                class="glyphicon glyphicon-pencil"></i></a>
+                    <a href="{{ path("loki_character_delete_character_skill", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

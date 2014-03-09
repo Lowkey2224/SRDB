@@ -70,16 +70,14 @@ class FrontEndController extends Controller
     {
         $userService = $this->get('loki_character.user');
 
-        if (!is_numeric($characterId) || !$userService->isLoggedIn()) {
+        if (!$userService->isLoggedIn()) {
             return $this->redirect(
                 $this->generateUrl('loki_character_index')
             );
         }
-        $id = intval($characterId);
-        $em = $this->getDoctrine();
-        $charRepo = $em->getRepository('LokiCharacterBundle:Character');
-        $char = $charRepo->findOneById($id);
-        if(is_null($char) || !($char instanceof Character))
+        $charRepo = $this->getDoctrine()->getRepository('LokiCharacterBundle:Character');
+        $character = $charRepo->findOneById($characterId);
+        if(is_null($character) || !($character instanceof Character))
         {
             return $this->redirect(
                 $this->generateUrl('loki_character_index')
@@ -87,23 +85,84 @@ class FrontEndController extends Controller
         }
 //                $owner = $em->getRepository("LokiCharacterBundle:User")->find($char->g);
             return array(
-                'char' => $char,
-                "username" => $char->getUser()->getUsername(),
-                "attributes" => $char->getAttributes(),
-                "skills" => $char->getSkills(),
-                "equip" => $char->getItems(),
-                "connections" => $char->getConnectionsInDB(),
-                "connectionsNotInDB" => $char->getConnectionsNotInDB(),
+                'char' => $character,
+
+
                 "spells" => array(),
                 "kipowers" => array(),
                 "cyberware" => array(),
-                "editable" => $userService->isAllowedToEdit($this->getUser(), $char),
-                'showAll' => ($showAll == 1)?true:false,
+                "editable" => $userService->isAllowedToEdit($this->getUser(), $character),
+                'showAll' => $showAll,
             );
 
 
 
     }
+
+    public function showCharAction($character)
+    {
+        $char = $character;
+        return $this->render(
+            'LokiCharacterBundle:FrontEnd:showCharacter.html.twig',
+            array(
+                'char' => $char,
+                "editable" => $this->get('loki_character.user')->isAllowedToEdit($this->getUser(), $char),
+                "username" => $char->getUser()->getUsername(),
+            )
+        );
+    }
+
+    public function showAttributesAction($character, $showAll= 0)
+    {
+        return $this->render(
+            'LokiCharacterBundle:FrontEnd:showAttributes.html.twig',
+            array(
+                'char' => $character,
+                "attributes" => $character->getAttributes(),
+                "editable" => $this->get('loki_character.user')->isAllowedToEdit($this->getUser(), $character),
+                'showAll' => ($showAll == 1)?true:false,
+            )
+        );
+    }
+
+    public function showSkillsAction($character)
+    {
+        return $this->render(
+            'LokiCharacterBundle:FrontEnd:showSkills.html.twig',
+            array(
+                'char' => $character,
+                "skills" => $character->getSkills(),
+                "editable" => $this->get('loki_character.user')->isAllowedToEdit($this->getUser(), $character),
+            )
+        );
+    }
+
+    public function showEquipAction($character)
+    {
+        return $this->render(
+            'LokiCharacterBundle:FrontEnd:showEquip.html.twig',
+            array(
+                'char' => $character,
+                "equip" => $character->getItems(),
+                "editable" => $this->get('loki_character.user')->isAllowedToEdit($this->getUser(), $character),
+            )
+        );
+    }
+
+    public function showConnectionsAction($character)
+    {
+        return $this->render(
+            'LokiCharacterBundle:FrontEnd:showConnections.html.twig',
+            array(
+                'char' => $character,
+                "connections" => $character->getConnectionsInDB(),
+                "connectionsNotInDB" => $character->getConnectionsNotInDB(),
+                "editable" => $this->get('loki_character.user')->isAllowedToEdit($this->getUser(), $character),
+            )
+        );
+    }
+
+
 
 
 

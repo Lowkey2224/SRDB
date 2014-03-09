@@ -1,0 +1,27 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Equipment</th>
+        <th>
+            {% if editable == true %}
+                <a href="{{ path("loki_character_add_character_item", {"characterId" : char.id}) }}"><i
+                            class="glyphicon glyphicon-plus"></i> </a>
+            {% endif %}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in equip %}
+        <tr>
+            <td>{{ item.name }}: {{ item.quantity }} </td>
+            <td>{% if editable == true %}
+                    <a href="{{ path("loki_character_edit_character_item", {"characterId" : char.id, "itemId" : item.id}) }}"><i
+                                class="glyphicon glyphicon-pencil"></i></a>
+                    <a href="{{ path("loki_character_delete_character_item", {"characterId" : char.id, "itemId" : item.id}) }}"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Attribute</th>
+        <th></th>
+        <th>
+            {% if showAll == false %}
+                <a href="{{ path('loki_character_show_character', {'characterId': char.id, 'showAll' : 1}) }}"><i class="glyphicon glyphicon-resize-full"></i></a>
+            {% else %}
+                <a href="{{ path('loki_character_show_character', {'characterId': char.id, 'showAll' : 0}) }}"><i class="glyphicon glyphicon-resize-small"></i></a>
+            {% endif %}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for attributEntry in attributes %}
+        {% if attributEntry.level > 0 or showAll == true %}
+            <tr>
+                <td>{{ attributEntry.attribute.name }}: {{ attributEntry.level }}</td>
+                <td></td>
+                <td>{% if editable == true %}
+                        <a href="{{ path("loki_character_edit_character_attributes",{"characterId": char.id, "attributeNumber":attributEntry.attribute.id}) }}"><i
+                                    class="glyphicon glyphicon-pencil"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
