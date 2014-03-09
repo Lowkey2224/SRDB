@@ -32,4 +32,58 @@ class Specialization extends AbstractEntity{
      */
     protected $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\CharacterSkillToSpecialization", mappedBy="spec")
+     */
+    protected $specializations;
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $skill
+     */
+    public function setSkill($skill)
+    {
+        $this->skill = $skill;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSkill()
+    {
+        return $this->skill;
+    }
+
+    /**
+     * @param mixed $specializations
+     */
+    public function setSpecializations($specializations)
+    {
+        $this->specializations = $specializations;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSpecializations()
+    {
+        return $this->specializations;
+    }
+
+
+
 } 

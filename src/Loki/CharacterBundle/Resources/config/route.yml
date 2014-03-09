@@ -25,6 +25,19 @@ loki_character_skill_delete:
     requirements:
         skillId: \d+
 
+loki_character_skill_spec_edit:
+    pattern: /skill/specialization/edit/{skillId}/{specId}
+    defaults: {_controller: LokiCharacterBundle:Skill:editSpecialization, specId: 0}
+    requirements:
+        skillId: \d+
+
+loki_character_skill_spec_delete:
+    pattern: /skill/specialization/delete/{specId}
+    defaults: {_controller: LokiCharacterBundle:Skill:deleteSpecialization}
+    requirements:
+        skillId: \d+
+
+
 loki_character_show_character_for_user:
     pattern: /show/user/{userId}
     defaults: {_controller: LokiCharacterBundle:FrontEnd:showForUser, userId:0}
@@ -36,7 +49,7 @@ loki_character_show_character:
     defaults: {_controller: LokiCharacterBundle:FrontEnd:show, characterId:0, showAll = 0}
     requirements:
         characterId: \d+
-        showAll: \d
+
 
 loki_character_edit_character:
     pattern: /edit/{characterId}

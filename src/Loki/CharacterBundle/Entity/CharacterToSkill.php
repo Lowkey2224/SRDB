@@ -40,6 +40,11 @@ class CharacterToSkill extends AbstractEntity {
     protected $level;
 
     /**
+     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\CharacterSkillToSpecialization", mappedBy="skill")
+     */
+    protected $specializations;
+
+    /**
      * @param mixed $character
      */
     public function setCharacter($character)
@@ -85,6 +90,22 @@ class CharacterToSkill extends AbstractEntity {
     public function getSkill()
     {
         return $this->skill;
+    }
+
+    /**
+     * @param mixed $specializations
+     */
+    public function setSpecializations($specializations)
+    {
+        $this->specializations = $specializations;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSpecializations()
+    {
+        return $this->specializations;
     }
 
 

@@ -8,7 +8,9 @@
 namespace Loki\CharacterBundle\Controller;
 
 use Loki\CharacterBundle\Entity\Skill;
+use Loki\CharacterBundle\Entity\Specialization;
 use Loki\CharacterBundle\Form\SkillType;
+use Loki\CharacterBundle\Form\SpecializationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -91,6 +93,72 @@ class SkillController extends Controller{
             $skillRepo->delete($skill);
             $this->get('session')->getFlashbag()
             ->add('success', 'Fertigkeit '. $skill->getName(). ' wurde gelöscht');
+        }
+        return $this->redirect(
+            $this->generateUrl('loki_character_skill_index')
+        );
+    }
+
+    /**
+     * @Template()
+     * @param $specId
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function editSpecializationAction($skillId, $specId)
+    {
+        $userService = $this->get('loki_character.user');
+        if(!$userService->isLoggedIn())
+        {
+            return $this->redirect($this->generateUrl('loki_character_index'));
+        }
+        $skill = $this->getDoctrine()->getRepository('LokiCharacterBundle:Skill')->findOneById($skillId);
+        $specRepo = $this->getDoctrine()->getRepository('LokiCharacterBundle:Specialization');
+        $spec = is_null($specRepo->findOneById($specId))? new Specialization():$specRepo->findOneById($specId);
+        $spec->setSkill($skill);
+        $form = $this->createForm(new SpecializationType(), $spec);
+        $request = $this->getRequest();
+        if($request->getMethod() == 'POST')
+        {
+            $form->submit($request);
+            if($form->isValid())
+            {
+                $specRepo->persist($spec);
+                $this->get('session')
+                    ->getFlashBag()
+                    ->add('success', 'Spezialisierung '.$spec->getName().' wurde gespeichert.');
+                return $this->redirect(
+                    $this->generateUrl('loki_character_skill_index')
+                );
+            }
+        }
+        return array(
+            'form' => $form->createView(),
+            'spec' => $spec,
+        );
+    }
+
+    /**
+     *
+     * @param $specId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteSpecializationAction($specId)
+    {
+        $userService = $this->get('loki_character.user');
+        $isAdmin = $userService->isAdmin();
+        if(!$isAdmin)
+        {
+            return $this->redirect(
+                $this->generateUrl('loki_character_skill_index')
+            );
+        }
+        $specRepo = $this->getDoctrine()->getRepository('LokiCharacterBundle:Specialization');
+        $spec = $specRepo->findOneById($specId);
+        if(!is_null($spec))
+        {
+            $specRepo->delete($spec);
+            $this->get('session')->getFlashbag()
+                ->add('success', 'Spezialisierung '. $spec->getName(). ' wurde gelöscht');
         }
         return $this->redirect(
             $this->generateUrl('loki_character_skill_index')
