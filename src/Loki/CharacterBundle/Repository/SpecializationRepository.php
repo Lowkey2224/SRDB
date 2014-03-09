@@ -8,6 +8,6 @@
 namespace Loki\CharacterBundle\Repository;
 
 
-class SpecializationRepository {
+class SpecializationRepository extends MyBaseRepository{
 
 } 

@@ -7,7 +7,34 @@
 
 namespace Loki\CharacterBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-class Specialization {
+/**
+ * Chars
+ *
+ * @ORM\Table("`specializations`")
+ * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\SpecializationRepository")
+ * @UniqueEntity(fields={"skill","name"}, message="Diese Spezialisierung existiert bereits.")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Specialization extends AbstractEntity{
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Skill", inversedBy="specializations")
+     * @ORM\JoinColumn(name="skill_id", referencedColumnName="id")
+     */
+    protected $skill;
+
+    /**
+     * @var
+     * @ORM\Column(type="string")
+     */
+    protected $name;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $level;
 
 } 

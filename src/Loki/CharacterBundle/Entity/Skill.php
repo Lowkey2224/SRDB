@@ -17,7 +17,7 @@ class Skill extends AbstractEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=45)
+     * @ORM\Column(name="name", type="string", length=45, unique=true)
      */
     protected $name;
 
@@ -35,9 +35,14 @@ class Skill extends AbstractEntity
     protected $attribute;
 
     /**
-     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\Skill", mappedBy="skill")
+     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\CharacterToSkill", mappedBy="skill")
      */
     protected $characterLink;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\Specialization", mappedBy="skill")
+     */
+    protected $specializations;
 
     /**
      * @param mixed $attribute
@@ -101,6 +106,22 @@ class Skill extends AbstractEntity
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param mixed $specializations
+     */
+    public function setSpecializations($specializations)
+    {
+        $this->specializations = $specializations;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSpecializations()
+    {
+        return $this->specializations;
     }
 
 
