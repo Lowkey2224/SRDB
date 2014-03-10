@@ -1,0 +1,29 @@
+{% extends "LokiCharacterBundle::front.html.twig" %}
+{% block content %}
+    <div>
+        Spezialisierung {% if spec.specialization is not null %}
+                {{ spec.spec.name }} von {{ character.name }} bearbeiten.
+            {% else %}
+                zu {{ character.name }} hinzufügen.
+        {% endif %}
+    </div>
+    {% block form %}
+        <div class="form-horizontal">
+            {{ form_start(form) }}
+            {% for flashMessage in app.session.getFlashBag.get('form-error') %}
+                <div class="alert alert-info">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+
+
+            {{ form_row (form.specialization) }}
+            {{ form_row (form.level) }}
+            {{ form_row(form.submit) }}
+
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+
+    {% endblock %}
+{% endblock %}

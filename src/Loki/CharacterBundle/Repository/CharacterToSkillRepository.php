@@ -12,7 +12,7 @@ namespace Loki\CharacterBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Loki\CharacterBundle\Entity\Character;
 
-class CharacterToSkillRepository extends MyBaseRepository{
+class CharacterToSkillRepository extends AbstractBaseRepository{
 
     public function findByCharacter(Character $character, array $orderBy = null, $limit = null, $offset = null)
     {

@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 use Loki\CharacterBundle\Entity\Attribute;
 use Loki\CharacterBundle\Entity\Character;
 
-class CharacterToAttributeRepository extends MyBaseRepository{
+class CharacterToAttributeRepository extends AbstractBaseRepository{
 
     public function findByCharacter($character, array $orderBy = null, $limit = null, $offset = null)
     {

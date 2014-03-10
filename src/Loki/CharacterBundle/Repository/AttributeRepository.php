@@ -12,7 +12,7 @@ namespace Loki\CharacterBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Loki\CharacterBundle\Entity\Attribute;
 
-class AttributeRepository extends MyBaseRepository{
+class AttributeRepository extends AbstractBaseRepository{
 
 
 

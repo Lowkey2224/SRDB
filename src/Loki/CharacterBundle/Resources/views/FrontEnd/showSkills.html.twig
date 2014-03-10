@@ -14,6 +14,8 @@
         <tr>
             <td>{{ skillEntry.skill.name }}: {{ skillEntry.level }} </td>
             <td>{% if editable == true %}
+                    <a href="{{ path("loki_character_charskill_edit", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
+                                class="glyphicon glyphicon-plus"></i></a>
                     <a href="{{ path("loki_character_edit_character_skill", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
                                 class="glyphicon glyphicon-pencil"></i></a>
                     <a href="{{ path("loki_character_delete_character_skill", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i

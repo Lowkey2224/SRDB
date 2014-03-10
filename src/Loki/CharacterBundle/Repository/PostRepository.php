@@ -11,7 +11,7 @@ namespace Loki\CharacterBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class PostRepository extends MyBaseRepository{
+class PostRepository extends AbstractBaseRepository{
 
 
 } 

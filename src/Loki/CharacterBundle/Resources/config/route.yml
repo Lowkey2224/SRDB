@@ -3,10 +3,10 @@
     #path:     /
     #defaults: { _controller: LokiCharacterBundle:Default }
 
-#_default_show:
-#    resource: "@LokiCharacterBundle/Controller/DefaultController.php"
-#    type:     annotation
-#    prefix:   /show
+_default_show:
+    resource: "@LokiCharacterBundle/Controller/CharSkillController.php"
+    type:     annotation
+    prefix:   /specialization
 
 
 loki_character_skill_index:

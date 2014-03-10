@@ -37,13 +37,6 @@ class ConnectionController extends Controller{
         }
 
             return $this->editConnection($connection, $form, $inDB, $connectionRepo, $characterId);
-
-
-//    else{
-//            return $this->redirect(
-//                $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
-//            );
-//        }
     }
 
     /**

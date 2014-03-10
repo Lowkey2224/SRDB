@@ -36,6 +36,14 @@
                             {% endif %}
                         </td>
                     </tr>
+                    {% if skill.specializations is not null and skill.specializations is not empty%}
+                        <tr><td>
+                        {% for spec in skill.specializations %}
+                            {{ spec.name }},&nbsp;
+                        {% endfor %}
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>

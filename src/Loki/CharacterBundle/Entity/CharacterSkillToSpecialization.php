@@ -17,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table("`characterskill_to_specialization`")
  * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\CharacterSkillToSpecializationRepository")
  * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity(fields={"spec","skill"}, message="Dieser Character hat diese Spezialisierung bereits")
+ * @UniqueEntity(fields={"specialization","skill"}, message="Dieser Character hat diese Spezialisierung bereits")
  */
 class CharacterSkillToSpecialization extends AbstractEntity{
 
@@ -31,7 +31,7 @@ class CharacterSkillToSpecialization extends AbstractEntity{
      * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Specialization", inversedBy="specializations")
      * @ORM\JoinColumn(name="charskill_id", referencedColumnName="id")
      */
-    protected $spec;
+    protected $specialization;
 
     /**
      * @ORM\Column(type="integer")
@@ -73,17 +73,17 @@ class CharacterSkillToSpecialization extends AbstractEntity{
     /**
      * @param mixed $spec
      */
-    public function setSpec($spec)
+    public function setSpecialization($spec)
     {
-        $this->spec = $spec;
+        $this->specialization = $spec;
     }
 
     /**
      * @return mixed
      */
-    public function getSpec()
+    public function getSpecialization()
     {
-        return $this->spec;
+        return $this->specialization;
     }
 
 

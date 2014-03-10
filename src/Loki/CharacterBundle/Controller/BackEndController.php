@@ -21,7 +21,7 @@ use Loki\CharacterBundle\Form\CharacterToSkillType;
 use Loki\CharacterBundle\Form\CharacterType;
 use Loki\CharacterBundle\Form\ConnectionNotInDBType;
 use Loki\CharacterBundle\Form\SkillType;
-use Loki\CharacterBundle\Repository\MyBaseRepository;
+use Loki\CharacterBundle\Repository\AbstractBaseRepository;
 use Loki\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

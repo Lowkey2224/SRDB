@@ -11,7 +11,7 @@ namespace Loki\CharacterBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class ConnectionNotInDBRepository extends MyBaseRepository{
+class ConnectionNotInDBRepository extends AbstractBaseRepository{
 
 
 

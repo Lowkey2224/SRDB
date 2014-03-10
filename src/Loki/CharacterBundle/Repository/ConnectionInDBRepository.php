@@ -8,6 +8,6 @@
 namespace Loki\CharacterBundle\Repository;
 
 
-class ConnectionInDBRepository extends MyBaseRepository{
+class ConnectionInDBRepository extends AbstractBaseRepository{
 
 } 
