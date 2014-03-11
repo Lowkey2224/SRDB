@@ -17,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table("`characterskill_to_specialization`")
  * @ORM\Entity(repositoryClass="Loki\CharacterBundle\Repository\CharacterSkillToSpecializationRepository")
  * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity(fields={"specialization","skill"}, message="Dieser Character hat diese Spezialisierung bereits")
+ * @UniqueEntity(fields={"specialization","charSkill"}, message="Dieser Character hat diese Spezialisierung bereits")
  */
 class CharacterSkillToSpecialization extends AbstractEntity{
 
@@ -25,11 +25,11 @@ class CharacterSkillToSpecialization extends AbstractEntity{
      * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\CharacterToSkill", inversedBy="specializations")
      * @ORM\JoinColumn(name="charskill_id", referencedColumnName="id")
      */
-    protected $skill;
+    protected $charSkill;
 
     /**
      * @ORM\ManyToOne(targetEntity="Loki\CharacterBundle\Entity\Specialization", inversedBy="specializations")
-     * @ORM\JoinColumn(name="charskill_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="specialization_id", referencedColumnName="id")
      */
     protected $specialization;
 
@@ -37,6 +37,11 @@ class CharacterSkillToSpecialization extends AbstractEntity{
      * @ORM\Column(type="integer")
      */
     protected $level;
+
+    public function getName()
+    {
+        return $this->specialization->getName();
+    }
 
     /**
      * @param mixed $level
@@ -57,17 +62,17 @@ class CharacterSkillToSpecialization extends AbstractEntity{
     /**
      * @param mixed $skill
      */
-    public function setSkill($skill)
+    public function setCharSkill($skill)
     {
-        $this->skill = $skill;
+        $this->charSkill = $skill;
     }
 
     /**
      * @return mixed
      */
-    public function getSkill()
+    public function getCharSkill()
     {
-        return $this->skill;
+        return $this->charSkill;
     }
 
     /**

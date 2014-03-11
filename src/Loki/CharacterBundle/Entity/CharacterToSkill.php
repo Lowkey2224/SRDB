@@ -40,7 +40,7 @@ class CharacterToSkill extends AbstractEntity {
     protected $level;
 
     /**
-     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\CharacterSkillToSpecialization", mappedBy="skill")
+     * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\CharacterSkillToSpecialization", mappedBy="charSkill", fetch="EAGER")
      */
     protected $specializations;
 

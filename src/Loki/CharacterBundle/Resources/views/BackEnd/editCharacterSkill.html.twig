@@ -5,6 +5,18 @@
             von <a href="
             {{ path("loki_character_show_character", {'characterId':character.id}) }}
             ">{{ character.name }}</a> bearbeiten.
+
+            {% if charSkill.specializations is not null and  charSkill.specializations is not empty %}
+                {% for spec in charSkill.specializations  %}
+                    <div>
+                        {{ spec.name }} {{ spec.level }}
+                        <a href="{{ path("loki_character_charskill_edit_spec", {'specializationId':spec.id, 'characterId': character.id, 'skillId': charSkill.id}) }}"><i
+                                    class="glyphicon glyphicon-pencil"></i></a>
+                        <a href="{{ path("loki_character_charskill_delete_spec", {'specializationId':spec.id}) }}"><i
+                                    class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                {% endfor %}
+            {% endif %}
         {% else %}
             zu  {{ character.name }} hinzufügen.
         {% endif %}
@@ -15,6 +27,7 @@
                 {{ flashMessage }}
             </div>
         {% endfor %}
+
         <div class="form-horizontal">
             {{ form_start(form) }}
             {% if charSkill.skill is not null %}

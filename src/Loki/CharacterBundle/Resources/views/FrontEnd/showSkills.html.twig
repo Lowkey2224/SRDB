@@ -10,11 +10,29 @@
     </tr>
     </thead>
     <tbody>
+
     {% for skillEntry in skills %}
+        {% set specnames = "" %}
+        {% set speclevels = "" %}
+        {% if skillEntry.specializations is not null and  skillEntry.specializations is not empty %}
+            {% set specs = skillEntry.specializations %}
+            {% set specnames = "(" ~ skillEntry.specializations[0].name %}
+            {% set speclevels = "(" ~ skillEntry.specializations[0].level %}
+
+
+            {% for spec in skillEntry.specializations|slice(1)  %}
+            {#{% for i in 0..  %}#}
+                {% set specnames = specnames ~ ", " ~ spec.name %}
+                {% set speclevels = speclevels ~ ", " ~ spec.level%}
+            {% endfor %}
+                {% set specnames = specnames ~ ")" %}
+                {% set speclevels = speclevels ~ ")" %}
+
+        {% endif %}
         <tr>
-            <td>{{ skillEntry.skill.name }}: {{ skillEntry.level }} </td>
+            <td>{{ skillEntry.skill.name }} {{ specnames }}: {{ skillEntry.level }} {{ speclevels }} </td>
             <td>{% if editable == true %}
-                    <a href="{{ path("loki_character_charskill_edit", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
+                    <a href="{{ path("loki_character_charskill_edit_spec", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
                                 class="glyphicon glyphicon-plus"></i></a>
                     <a href="{{ path("loki_character_edit_character_skill", {'characterId':char.id, 'skillId' : skillEntry.id}) }}"><i
                                 class="glyphicon glyphicon-pencil"></i></a>

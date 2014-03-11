@@ -125,7 +125,7 @@ class FrontEndController extends Controller
         );
     }
 
-    public function showSkillsAction($character)
+    public function showSkillsAction(Character $character)
     {
         return $this->render(
             'LokiCharacterBundle:FrontEnd:showSkills.html.twig',

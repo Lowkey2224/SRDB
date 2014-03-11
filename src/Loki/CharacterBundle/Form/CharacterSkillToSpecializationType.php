@@ -39,8 +39,8 @@ class CharacterSkillToSpecializationType  extends AbstractType{
                     'property' => 'name',
                     'empty_value' => 'Bitte Spezialisierung auswählen',
                     'query_builder' => function (SpecializationRepository $er) use ($options){
-
-                            return $er->createQueryForFindBySkill($options['attr']['skill']);
+                            $_tmp = $er->createQueryForFindBySkill($options['attr']['skillId'])->getQuery()->getResult();
+                            return $er->createQueryForFindBySkill($options['attr']['skillId']);
                         },
                 )
             )

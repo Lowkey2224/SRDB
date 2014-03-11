@@ -88,6 +88,23 @@ Loki\CharacterBundle\Entity\Skill:
         type: 1
         attribute: @qck
 
+Loki\CharacterBundle\Entity\Specialization:
+    hiding:
+        name: verstecken
+        skill: @sth
+
+    sprinting:
+        name: sprinten
+        skill: @ath
+
+    street:
+        name: Straße
+        skill: @ett
+
+    corporate:
+        name: Konzern
+        skill: @ett
+
 Loki\CharacterBundle\Entity\CharacterToAttribute:
     con{Lodur, Nigel}:
         character: @<current()>

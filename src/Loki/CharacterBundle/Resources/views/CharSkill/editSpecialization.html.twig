@@ -2,7 +2,7 @@
 {% block content %}
     <div>
         Spezialisierung {% if spec.specialization is not null %}
-                {{ spec.spec.name }} von {{ character.name }} bearbeiten.
+                {{ spec.name }} von {{ character.name }} bearbeiten.
             {% else %}
                 zu {{ character.name }} hinzufügen.
         {% endif %}
