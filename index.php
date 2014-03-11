@@ -1,5 +1,5 @@
 <?php
-
-   header( 'Location: ./web' ) ;
+		require('app/check.php);
+   //header( 'Location: ./web' ) ;
 
 ?>
