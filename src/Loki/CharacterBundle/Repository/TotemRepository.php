@@ -8,6 +8,6 @@
 namespace Loki\CharacterBundle\Repository;
 
 
-class TotemRepository {
+class TotemRepository extends AbstractBaseRepository{
 
 } 

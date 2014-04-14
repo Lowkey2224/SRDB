@@ -5,6 +5,7 @@ namespace Loki\CharacterBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Loki\UserBundle\Entity\User;
 
 
 /**
@@ -68,6 +69,27 @@ class Character extends AbstractEntity
     protected $type;
 
     /**
+     * @var MagicalCapability
+     * @ORM\ManyToOne(targetEntity="MagicalCapability")
+     * @ORM\JoinColumn(name="magical_capability_id", referencedColumnName="id")
+     */
+    protected $magicalCapability;
+
+    /**
+     * @var MagicalTradition
+     * @ORM\ManyToOne(targetEntity="MagicalTradition")
+     * @ORM\JoinColumn(name="tradition_id", referencedColumnName="id")
+     */
+    protected $magicalTradition;
+
+    /**
+     * @var Totem
+     * @ORM\ManyToOne(targetEntity="Totem")
+     * @ORM\JoinColumn(name="totem_id", referencedColumnName="id")
+     */
+    protected $totem;
+
+    /**
      * @var
      * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\CharacterToAttribute", mappedBy="character", fetch="EAGER")
      */
@@ -106,7 +128,7 @@ class Character extends AbstractEntity
     protected $connectionsInDB;
 
     /**
-     * @var Collection
+     * @var Collection This is the Collection of Characters, which have this Character as Connection.
      * @ORM\OneToMany(targetEntity="Loki\CharacterBundle\Entity\ConnectionInDB", mappedBy="target", fetch="LAZY")
      */
     protected $connectionsInDBTarget;
@@ -349,6 +371,70 @@ class Character extends AbstractEntity
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $connectionsInDBTarget
+     */
+    public function setConnectionsInDBTarget($connectionsInDBTarget)
+    {
+        $this->connectionsInDBTarget = $connectionsInDBTarget;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConnectionsInDBTarget()
+    {
+        return $this->connectionsInDBTarget;
+    }
+
+    /**
+     * @param mixed $magicalCapability
+     */
+    public function setMagicalCapability($magicalCapability)
+    {
+        $this->magicalCapability = $magicalCapability;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMagicalCapability()
+    {
+        return $this->magicalCapability;
+    }
+
+    /**
+     * @param \Loki\CharacterBundle\Entity\MagicalTradition $magicalTradition
+     */
+    public function setMagicalTradition($magicalTradition)
+    {
+        $this->magicalTradition = $magicalTradition;
+    }
+
+    /**
+     * @return \Loki\CharacterBundle\Entity\MagicalTradition
+     */
+    public function getMagicalTradition()
+    {
+        return $this->magicalTradition;
+    }
+
+    /**
+     * @param \Loki\CharacterBundle\Entity\Totem $totem
+     */
+    public function setTotem($totem)
+    {
+        $this->totem = $totem;
+    }
+
+    /**
+     * @return \Loki\CharacterBundle\Entity\Totem
+     */
+    public function getTotem()
+    {
+        return $this->totem;
     }
 
 

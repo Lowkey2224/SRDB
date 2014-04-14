@@ -8,6 +8,6 @@
 namespace Loki\CharacterBundle\Repository;
 
 
-class MagicalTraditionRepository {
+class MagicalTraditionRepository extends AbstractBaseRepository{
 
 } 
