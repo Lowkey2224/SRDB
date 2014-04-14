@@ -20,7 +20,6 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Loki\CharacterBundle\LokiCharacterBundle(),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Loki\UserBundle\LokiUserBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),

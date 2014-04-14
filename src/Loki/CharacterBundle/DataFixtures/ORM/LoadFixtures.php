@@ -1,36 +1,31 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: marcus
- * Date: 21.02.14
- * Time: 15:22
+ * Created by Marcus "Loki" Jenz
+ * Date: 24.03.14
+ * Time: 09:49
  */
 
-namespace Loki\CharacterBundle\DataFixtures;
+
+$manager = $this->getContainer()->get('h4cc_alice_fixtures.manager');
+
+// Get a FixtureSet with __default__ options.
+$set = $manager->createFixtureSet();
+$set->addFile(__DIR__ . '/fixtures/users.yml', 'yaml');
+$set->addFile(__DIR__ . '/fixtures/characters.yml', 'yaml');
+$set->addFile(__DIR__ . '/fixtures/attributes.yml', 'yaml');
+$set->addFile(__DIR__ . '/fixtures/skills.yml', 'yaml');
+$set->addFile(__DIR__ . '/fixtures/characterToAttributes.yml', 'yaml');
+$set->addFile(__DIR__ . '/fixtures/characterToSkills.yml', 'yaml');
+$set->addFile(__DIR__ . '/fixtures/connectionsNotInDB.yml', 'yaml');
 
 
-use Doctrine\Common\DataFixtures\Doctrine;
-use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+// Change locale for this set only.
+$set->setLocale('de_DE');
+// Define a custom random seed for "predictable randomness".
+$set->setSeed(42);
+// Enable persisting of objects
+$set->setDoPersist(true);
+// Enable dropping and recreating current ORM schema.
+$set->setDoDrop(true);
 
-class LoadFixtures implements  FixtureInterface{
-
-    /**
-     * Load data fixtures with the passed EntityManager
-     *
-     * @param Doctrine\Common\Persistence\ObjectManager $manager
-     */
-    function load(ObjectManager $manager)
-    {
-        $objects = \Nelmio\Alice\Fixtures::load(__DIR__.'/fixtures.yml', $manager,
-            array('locale' => 'de_DE')
-        );
-
-        // optionally persist them into the doctrine object manager
-        // you can also do that yourself or persist them in another way
-        // if you do not use doctrine
-        $persister = new \Nelmio\Alice\ORM\Doctrine($manager);
-        $persister->persist($objects);
-
-    }
-}
+return $set;

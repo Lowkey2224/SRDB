@@ -21,16 +21,19 @@
         "doctrine/doctrine-fixtures-bundle": "~2.1@dev",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "knplabs/knp-paginator-bundle": "~2.3@dev",
+        "incenteev/composer-parameter-handler": "~2.0",
         "h4cc/alice-fixtures-bundle": "0.3.1"
     },
     "scripts": {
         "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
         ],
         "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -42,10 +45,19 @@
     },
     "minimum-stability": "stable",
     "extra": {
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        },
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
         "branch-alias": {
             "dev-master": "2.2-dev"
         }
-    }
+    },
+    "authors" : [{
+        "name" : "Marcus 'Loki' Jenz",
+        "email" : "marcus.jenz@googlemail.com",
+        "homepage" : "http://loki.shadowrunonline.de",
+        "role" : "Developer, Architect"
+    }]
 }
