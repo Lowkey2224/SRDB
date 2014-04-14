@@ -14,3 +14,6 @@ Loki\CharacterBundle\Entity\Character:
         description: <text(30)>
         type: 1
         user: @user-loki2
+        magicalTradition: @Schaman
+        magicalCapability: @FullMagician
+        totem: @Gargoyle
