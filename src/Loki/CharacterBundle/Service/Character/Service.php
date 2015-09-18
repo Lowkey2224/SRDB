@@ -41,6 +41,7 @@ class Service {
             $attr[$i]->setLevel(1);
             $attr[$i]->setCharacter($character);
         }
+
         $attr[1]->setAttribute($this->attributeRepo->getConstitution());
         $attr[2]->setAttribute($this->attributeRepo->getQuickness());
         $attr[3]->setAttribute($this->attributeRepo->getStrength());
