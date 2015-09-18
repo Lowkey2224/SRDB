@@ -22,3 +22,9 @@
     overflow-x: hidden;
     overflow-y: auto;
 }
+
+aside {
+    position: relative;
+    top: 15%;
+
+}

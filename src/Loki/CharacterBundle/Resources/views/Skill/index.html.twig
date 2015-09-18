@@ -10,7 +10,7 @@
                     <th>
                         {% if editable == true %}
                         <a href="{{ path("loki_character_skill_edit") }}"><i
-                                    class="glyphicon glyphicon-plus" ></i></a>{% endif %}
+                                    class="glyphicon glyphicon-plus" >add</i></a>{% endif %}
                     </th>
                 </tr>
                 {#<tr>#}
@@ -26,13 +26,13 @@
                         <td>{{ skill.attribute.name }}</td>
                         <td>{% if editable == true %}
                                 <a href="{{ path("loki_character_skill_spec_edit", {'skillId': skill.id}) }}"><i
-                                            class="glyphicon glyphicon-plus"></i></a>
+                                            class="glyphicon glyphicon-plus">add</i></a>
                                 <a href="{{ path("loki_character_skill_edit", {'skillId': skill.id}) }}"><i
-                                            class="glyphicon glyphicon-pencil"></i></a>
+                                            class="glyphicon glyphicon-pencil">edit</i></a>
                             {% endif %}
                             {% if isAdmin == true %}
                                 <a href="{{ path("loki_character_skill_delete", {'skillId': skill.id}) }}">
-                                    <i class="glyphicon glyphicon-remove"></i></a>
+                                    <i class="glyphicon glyphicon-remove">rm</i></a>
                             {% endif %}
                         </td>
                     </tr>
@@ -58,7 +58,7 @@
                     <th>
                         {% if editable == true %}
                         <a href="{{ path("loki_character_skill_edit") }}"><i
-                                    class="glyphicon glyphicon-plus"></i></a>{% endif %}
+                                    class="glyphicon glyphicon-plus">add</i></a>{% endif %}
                     </th>
                 </tr>
                 </thead>
@@ -69,11 +69,11 @@
                         <td>{{ skill.attribute.name }}</td>
                         <td>{% if editable == true %}
                                 <a href="{{ path("loki_character_skill_edit", {'skillId': skill.id}) }}"><i
-                                            class="glyphicon glyphicon-pencil"></i></a>
+                                            class="glyphicon glyphicon-pencil">edit</i></a>
                             {% endif %}
                             {% if isAdmin == true %}
                                 <a href="{{ path("loki_character_skill_delete", {'skillId': skill.id}) }}">
-                                    <i class="glyphicon glyphicon-remove"></i></a>
+                                    <i class="glyphicon glyphicon-remove"></i>rm</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -89,7 +89,7 @@
                     <th></th>
                     <th>{% if editable == true %}
                             <a href="{{ path("loki_character_skill_edit") }}"><i
-                                        class="glyphicon glyphicon-plus"></i> </a>
+                                        class="glyphicon glyphicon-plus">add</i> </a>
                         {% endif %}
                     </th>
                 </tr>
@@ -101,11 +101,11 @@
                         <td>{{ skill.attribute.name }}</td>
                         <td>{% if editable == true %}
                                 <a href="{{ path("loki_character_skill_edit", {'skillId': skill.id}) }}"><i
-                                            class="glyphicon glyphicon-pencil"></i></a>
+                                            class="glyphicon glyphicon-pencil">edit</i></a>
                             {% endif %}
                             {% if isAdmin == true %}
                                 <a href="{{ path("loki_character_skill_delete", {'skillId': skill.id}) }}">
-                                    <i class="glyphicon glyphicon-remove"></i></a>
+                                    <i class="glyphicon glyphicon-remove">rm</i></a>
                             {% endif %}
                         </td>
                     </tr>

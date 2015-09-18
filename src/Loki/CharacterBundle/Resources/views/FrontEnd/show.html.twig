@@ -1,41 +1,41 @@
 {% extends 'LokiCharacterBundle::front.html.twig' %}
 {% block content %}
     <div class="row">
-        <div class="col-md-4">
+        <div class="small-4 column">
             {{ render(controller('LokiCharacterBundle:FrontEnd:showChar', {
             'character': char
             })) }}
         </div>
-        <div class="col-md-4">
+        <div class="small-4 column">
             {{ render(controller('LokiCharacterBundle:FrontEnd:showAttributes', {
             'character': char,
             'showAll': showAll
             })) }}
         </div>
-        <div class="col-md-4">
+        <div class="small-4 column">
             {{ render(controller('LokiCharacterBundle:FrontEnd:showSkills', {
             'character': char
             })) }}
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="small-4 column">
             {{ render(controller('LokiCharacterBundle:FrontEnd:showEquip', {
             'character': char
             })) }}
         </div>
-        <div class="col-md-4">
+        <div class="small-4 column">
             {{ render(controller('LokiCharacterBundle:FrontEnd:showConnections', {
             'character': char
             })) }}
         </div>
-        <div class="col-md-4">
+        <div class="small-4 column">
             <table class="table">
                 <thead>
                 <tr>
                     <th>Spells</th>
                     <th>{% if editable == true %}
-                            <a href=""><i class="glyphicon glyphicon-plus"></i> </a>
+                            <a href=""><i class="glyphicon glyphicon-plus"></i></a>
                         {% endif %}
                     </th>
                 </tr>
@@ -56,13 +56,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="small-4 column">
             <table class="table">
                 <thead>
                 <tr>
                     <th>Ki-Kräfte</th>
                     <th>{% if editable == true %}
-                            <a href=""><i class="glyphicon glyphicon-plus"></i> </a>
+                            <a href=""><i class="glyphicon glyphicon-plus"></i></a>
                         {% endif %}
                     </th>
                 </tr>
@@ -81,7 +81,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-4">
+        <div class="small-4 column">
             <table class="table">
                 <thead>
                 <tr>

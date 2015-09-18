@@ -3,6 +3,11 @@
     #path:     /
     #defaults: { _controller: LokiCharacterBundle:Default }
 
+test:
+    resource: "@LokiCharacterBundle/Controller/TestController.php"
+    type:     annotation
+    prefix:   /test
+
 _default_show:
     resource: "@LokiCharacterBundle/Controller/CharSkillController.php"
     type:     annotation

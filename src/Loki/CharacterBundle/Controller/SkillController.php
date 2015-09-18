@@ -12,19 +12,21 @@ use Loki\CharacterBundle\Entity\Specialization;
 use Loki\CharacterBundle\Form\SkillType;
 use Loki\CharacterBundle\Form\SpecializationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class SkillController extends Controller{
 
     /**
-     * @Template()
      * @return array
+     * @Template()
      */
     public function indexAction()
     {
         $userService = $this->get('loki_character.user');
         if(!$userService->isLoggedIn())
         {
+
             return $this->redirect($this->generateUrl('loki_character_index'));
         }
         $isAdmin = $userService->isAdmin();
@@ -42,7 +44,10 @@ class SkillController extends Controller{
         );
     }
 
+
     /**
+     * @param $skillId
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      * @Template()
      */
     public function editAction($skillId)
@@ -76,6 +81,10 @@ class SkillController extends Controller{
         );
     }
 
+    /**
+     * @param $skillId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteAction($skillId)
     {
         $userService = $this->get('loki_character.user');
@@ -99,10 +108,12 @@ class SkillController extends Controller{
         );
     }
 
+
     /**
-     * @Template()
+     * @param $skillId
      * @param $specId
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @Template()
      */
     public function editSpecializationAction($skillId, $specId)
     {
@@ -137,11 +148,7 @@ class SkillController extends Controller{
         );
     }
 
-    /**
-     *
-     * @param $specId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
+
     public function deleteSpecializationAction($specId)
     {
         $userService = $this->get('loki_character.user');
