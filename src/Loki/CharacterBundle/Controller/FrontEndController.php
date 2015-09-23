@@ -76,7 +76,7 @@ class FrontEndController extends Controller
             );
         }
         $charRepo = $this->getDoctrine()->getRepository('LokiCharacterBundle:Character');
-        $character = $charRepo->findOneById($characterId);
+        $character = $charRepo->find($characterId);
         if(is_null($character) || !($character instanceof Character))
         {
             return $this->redirect(

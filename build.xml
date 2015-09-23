@@ -155,7 +155,8 @@
 
     <target name="database-fixtures-load" description="Load database fixtures">
         <exec executable="php" failonerror="true">
-            <arg line="${basedir}/app/console doctrine:fixtures:load --no-interaction"/>
+            <!--<arg line="${basedir}/app/console doctrine:fixtures:load &#45;&#45;no-interaction"/>-->
+            <arg line="${basedir}/app/console h4cc_alice_fixtures:load:sets src/Loki/CharacterBundle/DataFixtures/ORM/LoadFixtures.php"/>
         </exec>
         <echo message="Fixtures loaded"/>
     </target>
