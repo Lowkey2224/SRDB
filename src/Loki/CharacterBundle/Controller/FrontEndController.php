@@ -149,7 +149,7 @@ class FrontEndController extends Controller
         );
     }
 
-    public function showConnectionsAction($character)
+    public function showConnectionsAction(Character $character)
     {
         return $this->render(
             'LokiCharacterBundle:FrontEnd:showConnections.html.twig',

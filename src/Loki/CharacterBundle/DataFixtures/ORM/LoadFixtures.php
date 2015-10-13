@@ -20,6 +20,7 @@ $set->addFile(__DIR__ . '/fixtures/characters.yml', 'yaml');
 $set->addFile(__DIR__ . '/fixtures/characterToAttributes.yml', 'yaml');
 $set->addFile(__DIR__ . '/fixtures/characterToSkills.yml', 'yaml');
 $set->addFile(__DIR__ . '/fixtures/connectionsNotInDB.yml', 'yaml');
+$set->addFile(__DIR__ . '/fixtures/connectionsInDB.yml', 'yaml');
 
 
 // Change locale for this set only.
