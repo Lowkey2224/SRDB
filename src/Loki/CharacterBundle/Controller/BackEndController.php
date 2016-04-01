@@ -9,23 +9,17 @@
 namespace Loki\CharacterBundle\Controller;
 
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Loki\CharacterBundle\Entity\Attribute;
 use Loki\CharacterBundle\Entity\Character;
 use Loki\CharacterBundle\Entity\CharacterToAttribute;
 use Loki\CharacterBundle\Entity\CharacterToSkill;
-use Loki\CharacterBundle\Entity\ConnectionNotInDB;
-use Loki\CharacterBundle\Entity\Skill;
 use Loki\CharacterBundle\Form\CharacterToAttributeType;
 use Loki\CharacterBundle\Form\CharacterToSkillType;
 use Loki\CharacterBundle\Form\CharacterType;
-use Loki\CharacterBundle\Form\ConnectionNotInDBType;
-use Loki\CharacterBundle\Form\SkillType;
-use Loki\CharacterBundle\Repository\AbstractBaseRepository;
-use Loki\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class BackEndController extends Controller
 {
@@ -46,7 +40,7 @@ class BackEndController extends Controller
 
 
         $charRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character");
-        $char = $charRepo->findOneById($characterId);
+        $char = $charRepo->find($characterId);
         $new = false;
         if (is_null($char)) {
             $char = new Character();
@@ -120,9 +114,9 @@ class BackEndController extends Controller
         }
 
         $charRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character");
-        $char = $charRepo->findOneById($characterId);
+        $char = $charRepo->find($characterId);
         $charToSkillRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:CharacterToSkill");
-        $charSkill = $charToSkillRepo->findOneById($skillId);
+        $charSkill = $charToSkillRepo->find($skillId);
         $userService = $this->get('loki_character.user');
         if (!$userService->isAllowedToEdit($this->getUser(), $char)) {
             return $this->redirect(
@@ -145,23 +139,22 @@ class BackEndController extends Controller
     /**
      * @Route("/edit/{characterId}/skill/{skillId}")
      * @Template()
+     * @Security("is_granted('ROLE_USER')")
      */
     public function editCharacterSkillAction($characterId, $skillId)
     {
         $charRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character");
-        $char = $charRepo->findOneById($characterId);
+        $char = $charRepo->find($characterId);
         $userService = $this->get('loki_character.user');
-        if (!$userService->isLoggedIn() || is_null($char)) {
+        if (is_null($char)) {
             return $this->redirect($this->generateUrl('loki_character_index'));
         }
         $charToSkillRepo = $this->getDoctrine()->getRepository("LokiCharacterBundle:CharacterToSkill");
-        if (is_null($charToSkillRepo->findOneById($skillId))) {
+        $charskill = $charToSkillRepo->find($skillId);
+        if (is_null($charskill)) {
             $charskill = new CharacterToSkill();
             $charskill->setCharacter($char);
-        } else {
-            $charskill = $charToSkillRepo->findOneById($skillId);
         }
-
         if (!$userService->isAllowedToEdit($this->getUser(), $char, $charskill)) {
             return $this->redirect(
                 $this->generateUrl('loki_character_show_character', array("characterId" => $characterId))
@@ -211,7 +204,7 @@ class BackEndController extends Controller
      */
     public function editCharacterAttributeAction($characterId, $attributeNumber)
     {
-        $char = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character")->findOneById($characterId);
+        $char = $this->getDoctrine()->getRepository("LokiCharacterBundle:Character")->find($characterId);
         $userService = $this->get('loki_character.user');
         if (!$userService->isLoggedIn() || is_null($char)) {
             return $this->redirect(
@@ -223,7 +216,7 @@ class BackEndController extends Controller
         $attr = $charToAttributeRepo->findOneBy(
             array(
                 'character' => $char,
-                'attribute' => $this->getDoctrine()->getRepository("LokiCharacterBundle:Attribute")->findOneById(
+                'attribute' => $this->getDoctrine()->getRepository("LokiCharacterBundle:Attribute")->find(
                         $attributeNumber
                     )
             )
@@ -243,7 +236,7 @@ class BackEndController extends Controller
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
             if ($form->isValid()) {
-                $attr = $charToAttributeRepo->persist($attr);
+                $charToAttributeRepo->persist($attr);
                 $this->get('session')
                     ->getFlashBag()
                     ->add('success', 'Eintrag gespeichert.');
@@ -266,56 +259,6 @@ class BackEndController extends Controller
             'character' => $char,
             'form' => $form->createView(),
         ));
-    }
-
-    /**
-     * Prueft ob der aktuelle Nutzer eingeloggt ist & die berechtigung hat um den eintrag von
-     * $otherId zu bearbeiten. Falls nicht wird ein dementsprechender redirect zurückgegeben.
-     * Wenn alles Okay ist wird true zurückgegeben.
-     * @param $charId int Die ID des Characters.
-     * @param $charRepo ObjectRepository Das Repository für Charactere
-     * @param $otherId int Die ID des anderen Eintrags
-     * @param $otherRepo ObjectRepository Das Repository zum anderen Eintrag.
-     * @param $user User der aktuelle Benutzer
-     * @return bool|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    private function warmup($charId, $charRepo, $otherId, $otherRepo, $user)
-    {
-        $userService = $this->get('loki_character.user');
-        if (!$userService->isLoggedIn()) {
-            $this->get('session')->getFlashBag()
-                ->add('error', 'Bitte loggen sie sich zuerst ein!');
-
-            return $this->redirect(
-                $this->generateUrl('loki_character_index')
-            );
-        }
-
-        $connection = is_null($otherId) ? new ConnectionNotInDB() : $otherRepo->findOneById($otherId);
-        $char = $charRepo->findOneById($charId);
-        if (is_null($connection) || is_null($char)) {
-            $this->get('session')->getFlashBag()
-                ->add('error', 'Das ist nicht der Eintrag den sie suchen');
-
-            return $this->redirect(
-                $this->generateUrl(
-                    "loki_show_character",
-                    array("characterId" => $charId)
-                )
-            );
-        }
-        if (!$userService->isAllowedToEdit($user, $char)) {
-            $this->get('session')->getFlashBag()
-                ->add('error', 'Das ist nicht der Eintrag den sie suchen');
-
-            return $this->redirect(
-                $this->generateUrl(
-                    "loki_character_index"
-                )
-            );
-        }
-
-        return true;
     }
 
 } 

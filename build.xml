@@ -140,7 +140,7 @@
     <target name="assets" description="Installing assets">
         <exec executable="${basedir}/app/console" failonerror="true">
             <arg value="assets:install"/>
-            <arg value="--symlink"/>
+            <!--<arg value="&#45;&#45;symlink"/>-->
             <arg value="${basedir}/web"/>
         </exec>
     </target>
